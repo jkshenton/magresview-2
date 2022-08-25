@@ -68,9 +68,8 @@ function MVSidebarEuler(props) {
 
     return (<MagresViewSidebar show={props.show} title='Euler angles'>
         <p>
-            Left (right) click on atoms to pick atom A (B). Choose with the 
-            switches below which NMR tensor you care about for each, and
-            the Euler angles between them will be automatically printed out.
+            Left and right click on atoms to pick a pair of atoms, A and B respectively (which can be the same). Use the switches below to select the pair
+            of tensors of interest.
         </p>
         <div className='mv-sidebar-block'>
             <h3>Atom A</h3>
@@ -78,7 +77,7 @@ function MVSidebarEuler(props) {
                 <span className='header'>Label:</span>
                 <span>{eulint.atomLabelA}</span>
                 <div className='mv-euler-agrid-switch'>
-                    <span>MS</span>
+                    <span>Shielding</span>
                     <MVSwitch on={ eulint.tensorA === 'efg' } onClick={() => { eulint.tensorA = otherTensor[eulint.tensorA]; }} 
                               colorFalse='var(--ms-color-2)' colorTrue='var(--efg-color-2)'/>
                     <span>EFG</span>
@@ -91,7 +90,7 @@ function MVSidebarEuler(props) {
                 <span className='header'>Label:</span>
                 <span>{eulint.atomLabelB}</span>
                 <div className='mv-euler-agrid-switch'>
-                    <span>MS</span>
+                    <span>Shielding</span>
                     <MVSwitch on={ eulint.tensorB === 'efg' } onClick={() => { eulint.tensorB = otherTensor[eulint.tensorB]; }} 
                               colorFalse='var(--ms-color-2)' colorTrue='var(--efg-color-2)'/>
                     <span>EFG</span>
