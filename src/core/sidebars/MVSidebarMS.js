@@ -93,7 +93,7 @@ function MVSidebarMS(props) {
              <MVCheckBox onCheck={(v) => { msint.hasEllipsoids = v; }} checked={msint.hasEllipsoids}>Ellipsoids</MVCheckBox>
              <MVRange min={0.01} max={0.5} step={0.005} value={msint.ellipsoidScale}
                       onChange={(s) => { msint.ellipsoidScale = s; }} disabled={!msint.hasEllipsoids}>Ellipsoid scale</MVRange>
-             <MVButton onClick={() => { msint.ellipsoidScale = 0; }} disabled={!msint.hasEllipsoids}>Set auto scale</MVButton>
+             <MVButton onClick={() => { msint.ellipsoidScale = 0; }} disabled={!msint.hasEllipsoids}>Auto scale</MVButton>
              <MVRadioGroup label='Show labels' onSelect={(v) => { msint.labelsMode = v; }} selected={msint.labelsMode} name='ms_label_radio'>
                 <MVRadioButton value='none'>None</MVRadioButton>
                 <MVRadioButton value='iso'>Isotropy (ppm)</MVRadioButton>

@@ -67,7 +67,7 @@ function MVSidebarJCoup(props) {
                  <MVCheckBox color='var(--jcoup-color-3)' onCheck={(v) => { jcint.homonuclearOnly = v; }} checked={ jcint.homonuclearOnly } >Show only homonuclear couplings</MVCheckBox>                        
             </div>
         </div>
-         <div className={chainClasses('mv-warning-noms', has_jc? 'hidden': '')}>No ISC data found</div>
+         <div className={chainClasses('mv-warning-noms', has_jc? 'hidden': '')}>No J coupling data found in file (lines beginning isc)</div>
     </MagresViewSidebar>);
 }
 
