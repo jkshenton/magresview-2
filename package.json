@@ -19,7 +19,7 @@
     "color-scales": "^3.0.2",
     "colormap": "^2.3.2",
     "core-js": "^3.19.1",
-    "crystvis-js": "^0.4.13",
+    "@ccp-nc/crystvis-js": "^0.4.14",
     "immutable": "^4.0.0",
     "mathjs": "^10.0.2",
     "normalize.css": "^8.0.1",
@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "sass": "^1.54.8"
   }
 }

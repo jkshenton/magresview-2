@@ -17,7 +17,7 @@ import { Events } from '../listeners';
 import { makeSelector, BaseInterface } from '../utils';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
-import CrystVis from 'crystvis-js';
+import CrystVis from '@ccp-nc/crystvis-js';
 
 const LC = CrystVis.LEFT_CLICK;
 const SLC = CrystVis.LEFT_CLICK + CrystVis.SHIFT_BUTTON;

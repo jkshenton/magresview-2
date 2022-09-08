@@ -28,7 +28,7 @@ import { initialEulerState } from './EulerInterface';
 
 import { Events } from '../listeners';
 
-import CrystVis from 'crystvis-js';
+import CrystVis from '@ccp-nc/crystvis-js';
 
 
 const initialAppState = {
