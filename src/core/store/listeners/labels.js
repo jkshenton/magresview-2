@@ -2,7 +2,7 @@
  * Listeners for the rendering of labels
  */
 
-import { addPrefix, getSel, getNMRData } from '../utils';
+import { addPrefix, getSel, getNMRData, formatNumber } from '../utils';
 import { selColor, msColor, efgColor } from './colors';
 
 function makeLabelListener(name, color, shiftfunc) {
@@ -36,7 +36,10 @@ function makeLabelListener(name, color, shiftfunc) {
 
             if (name !== 'sel_sites') {
                 let [units, values] = getNMRData(next_view, mode, name, ref_table);
-                label_texts = values.map((v) => v.toFixed(2) + ' ' + units);                
+                // use formatNumber to get the right number of decimals
+                let precision = 2;
+                label_texts = values.map((v) => formatNumber(v, units, precision));
+                
             }
             else {
                 // Non-NMR labels

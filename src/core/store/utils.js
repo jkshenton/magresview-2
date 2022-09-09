@@ -81,15 +81,58 @@ function getNMRData(view, datatype, tenstype='ms', reftable=null) {
         case 'Q':
             values = tensors.map((T, i) => {
                 let iD = view.atoms[i].isotopeData;
-                return T.efgAtomicToHz(iD.Q).haeberlen_eigenvalues[2]/1e3;
+                return T.efgAtomicToHz(iD.Q).haeberlen_eigenvalues[2];
             });
-            units = 'kHz';
+            units = 'Hz'; // if this changes, change formatNumber as well!
             break;
         default:
             break;
     }
 
     return [units, values];
+}
+function formatNumber(value, unit, precision=2) {
+    // function to adapt metric prefix to number given a unit string
+    // and a precision
+    // returns a string with the number and the unit
+    
+    // special hadnling for kHz
+    if (unit === 'Hz') {
+        // -- handle negative values -- //
+        if (value < 0) {
+            return '-' + formatNumber(-value, unit, precision);
+        }
+
+        // -- handle positive values -- //
+        
+        // suppress label completely if value is less than 1e-8 kHz
+        if (value < 1e-8) {
+            return '';
+        }
+
+        let prefix = '';
+        // convert to MHz if value is greater than 1 MHz
+        if (value > 1e6) {
+            value /= 1e6;
+            prefix = 'M';
+            // hard-coded precision for MHz
+            precision = 3;
+        }
+        // Convert to kHz if value is > 1 kHz but < 1 MHz
+        else if (value > 1e3) {
+            value /= 1e3;
+            prefix = 'k';
+            // hard-coded precision for kHz
+            precision = 1;
+        }
+        else {
+            // hard-coded precision for Hz
+            precision = 0;
+        }
+        unit = prefix + 'Hz';
+
+    }
+    return value.toFixed(precision) + ' ' + unit;
 }
 
 function getLinkLabel(a1, a2, linktype) {
@@ -156,6 +199,7 @@ export {
     addPrefix,
     getSel,
     getNMRData,
+    formatNumber,
     getLinkLabel,
     BaseInterface,
     DataCheckInterface
