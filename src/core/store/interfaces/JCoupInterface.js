@@ -27,7 +27,8 @@ const initialJCoupState = {
     jc_central_atom: null,
     jc_radius: 1.0,
     jc_sphere_show: true,
-    jc_homonuclear: false
+    jc_homonuclear: false,
+    jc_precision: 2,
 };
 
 
@@ -102,6 +103,21 @@ class JCoupInterface extends BaseInterface {
             }
         });
     }
+
+    get precision() {
+        return this.state.jc_precision;
+    }
+
+    set precision(v) {
+        this.dispatch({
+            type:'update',
+            data: {
+                jc_precision: v,
+                listen_update: [ Events.JC_LINKS ]
+            }
+        });
+    }
+    
 
     bind() {
         const dispatch = this._dispatcher;

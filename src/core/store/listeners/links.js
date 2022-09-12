@@ -110,15 +110,16 @@ function makeDisplayLinksListener(name, color) {
         current_link_names.forEach((name) => { model.removeGraphics(name); });
 
         // Now creating a new one
+        let precision = state[addPrefix(name, 'precision')];
         current_link_names = [];
         if (on && catom && linkview) {
             linkview.atoms.forEach((a2, i) => {
 
                 if (a2 === catom)
-                    return;
+                return;
 
                 const lname = name + '_link_' + i;
-                const label = getLinkLabel(catom, a2, name);
+                const label = getLinkLabel(catom, a2, name, precision);
 
                 if (label === '') {
                     // No coupling found

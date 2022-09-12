@@ -27,7 +27,8 @@ const initialDipState = {
     dip_central_atom: null,
     dip_radius: 1.0,
     dip_sphere_show: true,
-    dip_homonuclear: false
+    dip_homonuclear: false,
+    dip_precision: 2,
 };
 
 
@@ -94,6 +95,20 @@ class DipInterface extends BaseInterface {
             data: {
                 dip_sphere_show: v,
                 listen_update: [ Events.DIP_RENDER ]
+            }
+        });
+    }
+
+    get precision() {
+        return this.state.dip_precision;
+    }
+
+    set precision(v) {
+        this.dispatch({
+            type:'update',
+            data: {
+                dip_precision: v,
+                listen_update: [ Events.DIP_LINKS ]
             }
         });
     }

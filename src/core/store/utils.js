@@ -135,18 +135,18 @@ function formatNumber(value, unit, precision=2) {
     return value.toFixed(precision) + ' ' + unit;
 }
 
-function getLinkLabel(a1, a2, linktype) {
+function getLinkLabel(a1, a2, linktype, precision=2) {
 
     switch (linktype) {
         case 'dip':
             const D = dipolarCoupling(a1, a2)[0];
-            return (D/1e3).toFixed(2) + ' kHz';
+            return (D/1e3).toFixed(precision) + ' kHz';
         case 'jc':
             const J = jCoupling(a1, a2);
             if (J === null) {
                 return '';
             }
-            return J.toFixed(2) + ' Hz';
+            return J.toFixed(precision) + ' Hz';
         default:
             return '';
     }

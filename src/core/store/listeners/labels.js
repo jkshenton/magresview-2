@@ -35,9 +35,12 @@ function makeLabelListener(name, color, shiftfunc) {
         if (mode !== 'none') {
 
             if (name !== 'sel_sites') {
+                // Get the data
                 let [units, values] = getNMRData(next_view, mode, name, ref_table);
+                // get precision depending on name
+                let precision = state[addPrefix(name, 'precision')];
+                
                 // use formatNumber to get the right number of decimals
-                let precision = 2;
                 label_texts = values.map((v) => formatNumber(v, units, precision));
                 
             }

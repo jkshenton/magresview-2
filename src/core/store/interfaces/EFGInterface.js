@@ -20,7 +20,8 @@ const initialEFGState = {
     efg_view: null,
     efg_ellipsoids_on: false,
     efg_ellipsoids_scale: 0.1,
-    efg_labels_type: 'none'
+    efg_labels_type: 'none',
+    efg_precision: 2,
 };
 
 // Action creator
@@ -63,6 +64,14 @@ class EFGInterface extends CScaleInterface {
 
     set labelsMode(v) {
         this.dispatch(efgAction({ efg_labels_type: v }, [Events.EFG_LABELS]));
+    }
+
+    get precision() {
+        return this.state.efg_precision;
+    }
+
+    set precision(v) {
+        this.dispatch(efgAction({ 'efg_precision': v }, [Events.EFG_LABELS]));
     }
 
     get colorScaleAvailable() {

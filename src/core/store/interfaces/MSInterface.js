@@ -23,7 +23,8 @@ const initialMSState = {
     ms_ellipsoids_on: false,
     ms_ellipsoids_scale: 0.05,
     ms_labels_type: 'none',
-    ms_references: {}
+    ms_references: {},
+    ms_precision: 2,
 };
 
 // Update any new references for chemical shifts
@@ -88,6 +89,14 @@ class MSInterface extends CScaleInterface {
 
     set labelsMode(v) {
         this.dispatch(msAction({ 'ms_labels_type': v }, [Events.MS_LABELS]));
+    }
+
+    get precision() {
+        return this.state.ms_precision;
+    }
+
+    set precision(v) {
+        this.dispatch(msAction({ 'ms_precision': v }, [Events.MS_LABELS]));
     }
 
     get colorScaleAvailable() {

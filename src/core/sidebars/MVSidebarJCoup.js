@@ -65,6 +65,7 @@ function MVSidebarJCoup(props) {
                           onChange={(s) => { jcint.radius = s; }}>Selection radius / Å</MVRange>
                  <MVCheckBox color='var(--jcoup-color-3)' onCheck={(v) => { jcint.showSphere = v; }} checked={ jcint.showSphere } >Show selection sphere</MVCheckBox>                        
                  <MVCheckBox color='var(--jcoup-color-3)' onCheck={(v) => { jcint.homonuclearOnly = v; }} checked={ jcint.homonuclearOnly } >Show only homonuclear couplings</MVCheckBox>                        
+                 <MVRange min={0} max={6} step={1} value={jcint.precision} onChange={(p) => { jcint.precision = p; }} disabled={!jcint.isOn}>Label Precision</MVRange>
             </div>
         </div>
          <div className={chainClasses('mv-warning-noms', has_jc? 'hidden': '')}>No J coupling data found in file (lines beginning isc)</div>
