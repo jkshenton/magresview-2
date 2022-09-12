@@ -54,7 +54,7 @@ function MVSidebarEFG(props) {
                 <MVRadioButton value='none'>None</MVRadioButton>
                 <MVRadioButton value='efg_aniso'>Anisotropy</MVRadioButton>
                 <MVRadioButton value='efg_asymm'>Asymmetry</MVRadioButton>
-                <MVRadioButton value='efg_Q'>Quadrupole Coupling</MVRadioButton>
+                <MVRadioButton value='efg_Q'>|Quadrupole Coupling|</MVRadioButton>
              </MVRadioGroup>
         </div>
         <div className={chainClasses('mv-warning-noms', has_efg? 'hidden' : '')}>No EFG data found</div>

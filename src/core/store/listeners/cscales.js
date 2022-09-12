@@ -33,6 +33,12 @@ function colorScaleListener(state) {
 
         const nmrdata = getNMRData(next_view, mode, prefix, ref_table);
         const values = nmrdata[1];
+        if (cstype === 'efg_Q') {
+            // Special case for EFG Q
+            // convert all to absolute values
+            values.forEach((v, i) => values[i] = Math.abs(v));
+        }
+
 
         let minv = _.min(values);
         let maxv = _.max(values);
