@@ -130,8 +130,8 @@ class FilesInterface extends BaseInterface {
         table += `Euler angles convention: ${conv}\n\n`;
 
         // Header
-        table += tableRow(['Label', 'Element', 'Index', 'Isotropy (ppm)', 
-                           'Anisotropy (ppm)', 'Asymmetry', 
+        table += tableRow(['Label', 'Element', 'Index', 's_iso/ppm', 
+                           'Anisotropy/ppm', 'Asymmetry', 
                            'alpha', 'beta', 'gamma'], tabW);
 
         // Get the NMR data
@@ -149,7 +149,7 @@ class FilesInterface extends BaseInterface {
             table += tableRow([
                 a.crystLabel,
                 a.isotope + a.element,
-                a.index,
+                a.index + 1, // 1-indexed
                 iso[i],
                 aniso[i],
                 asymm[i],
@@ -172,15 +172,15 @@ class FilesInterface extends BaseInterface {
         table += `Euler angles convention: ${conv}\n\n`;
 
         // Header
-        table += tableRow(['Label', 'Element', 'Index', 'Vzz (au)', 'Anisotropy (au)', 
-                           'Asymmetry', 'Q (kHz)', 
+        table += tableRow(['Label', 'Element', 'Index', 'Vzz/au', 'Anisotropy/au', 
+                           'Asymmetry', 'Q/MHz', 
                            'alpha', 'beta', 'gamma'], tabW);
 
         // Get the NMR data
         const Vzz = getNMRData(view, 'e_z', 'efg')[1];
         const aniso = getNMRData(view, 'aniso', 'efg')[1];
         const asymm = getNMRData(view, 'asymm', 'efg')[1];
-        const Q = getNMRData(view, 'Q', 'efg')[1];
+        const Q = getNMRData(view, 'Q', 'efg')[1] / 1e6; // Convert to MHz
 
         // Euler angles
         const euler = view.atoms.map((a) => {
@@ -192,7 +192,7 @@ class FilesInterface extends BaseInterface {
             table += tableRow([
                 a.crystLabel,
                 a.isotope + a.element,
-                a.index,
+                a.index + 1, // 1-indexed
                 Vzz[i],
                 aniso[i],
                 asymm[i],
@@ -216,7 +216,7 @@ class FilesInterface extends BaseInterface {
         // Header
         table += tableRow(['Label 1', 'Element 1', 'Index 1', 
                            'Label 2', 'Element 2', 'Index 2',
-                           'D (kHz)', 'r_x (Ang)', 'r_y (Ang)', 'r_z (Ang)'], tabW);
+                           'D/kHz', 'r_x/Ang', 'r_y/Ang', 'r_z/Ang'], tabW);
 
         const atoms = view.atoms;
 
@@ -228,10 +228,10 @@ class FilesInterface extends BaseInterface {
                 table += tableRow([
                     a1.crystLabel,
                     a1.isotope + a1.element,
-                    a1.index,
+                    a1.index + 1, // 1-indexed
                     a2.crystLabel,
                     a2.isotope + a2.element,
-                    a2.index,
+                    a2.index + 1, // 1-indexed
                     D,
                     r[0], r[1], r[2]
                 ], tabW, prec);
@@ -251,7 +251,7 @@ class FilesInterface extends BaseInterface {
         // Header
         table += tableRow(['Label 1', 'Element 1', 'Index 1', 
                            'Label 2', 'Element 2', 'Index 2',
-                           'J (Hz)'], tabW);
+                           'J/Hz'], tabW);
 
         const atoms = view.atoms;
 
@@ -266,10 +266,10 @@ class FilesInterface extends BaseInterface {
                 table += tableRow([
                     a1.crystLabel,
                     a1.isotope + a1.element,
-                    a1.index,
+                    a1.index + 1, // 1-indexed
                     a2.crystLabel,
                     a2.isotope + a2.element,
-                    a2.index,
+                    a2.index + 1, // 1-indexed
                     J
                 ], tabW, prec);
             });
