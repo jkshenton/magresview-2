@@ -43,7 +43,15 @@ function makeLabelListener(name, color, shiftfunc) {
             }
             else {
                 // Non-NMR labels
-                label_texts = next_view.map((a) => a.crystLabel);
+                if (mode === 'element') {
+                    label_texts = next_view.atoms.map((a) => a.element);
+                }
+                else if (mode === 'isotope') {
+                    label_texts = next_view.atoms.map((a) => a.isotope + a.element);
+                }
+                else if (mode === 'labels') {
+                    label_texts = next_view.atoms.map((a) => a.crystLabel);
+                }
             }
 
             next_view.addLabels(label_texts, name, (a, i) => ({ 

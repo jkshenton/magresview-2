@@ -107,16 +107,15 @@ class SelInterface extends BaseInterface {
         });
     }
 
-    get showCrystLabels() {
-        return this.state.sel_sites_labels_type === 'labels';
+    // labels
+    get labelMode() {
+        return this.state.sel_sites_labels_type;
     }
 
-    set showCrystLabels(v) {
-        v = v? 'labels' : 'none';
-
+    set labelMode(v) {
         this.dispatch({
             type: 'update',
-            data: { sel_sites_labels_type: v, listen_update: [Events.SEL_LABELS]}
+            data: {sel_sites_labels_type: v, listen_update: [Events.SEL_LABELS]}
         });
     }
 
@@ -212,7 +211,8 @@ class SelInterface extends BaseInterface {
             type: 'update',
             data: {
                 listen_update: [Events.EFG_LABELS, Events.CSCALE, 
-                                Events.DIP_RENDER, Events.JC_RENDER]
+                                Events.DIP_RENDER, Events.JC_RENDER,
+                                Events.SEL_LABELS]
             }
         });
     }

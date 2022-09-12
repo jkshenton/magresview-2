@@ -105,6 +105,10 @@ function MVSidebarSelect(props) {
         selint.selectionMode = v;
     }
 
+    function labelMode(v) {
+        selint.labelMode = v;
+    }
+
     function setR(v) {
         selint.selectionSphereR = v;
     }
@@ -124,9 +128,18 @@ function MVSidebarSelect(props) {
 
     return (<MagresViewSidebar show={props.show} title='Select and display'>
         <div className='mv-sidebar-block'>
-            <MVCheckBox checked={selint.showCrystLabels} onCheck={(v) => { selint.showCrystLabels = v }}>Show crystallographic labels</MVCheckBox>        
             <MVCheckBox checked={selint.highlightSelected} onCheck={(v) => { selint.highlightSelected = v }}>Highlight selected</MVCheckBox>        
             <MVCheckBox checked={selint.showCell} onCheck={(v) => { selint.showCell = v }}>Show unit cell</MVCheckBox>        
+            <span className='sep-1' />  
+            {/* drop down for label by mode */}
+            <h4>Label by</h4>
+            {/* default is none */}
+            <MVCustomSelect onSelect={(v) => { labelMode(v); }} selected={selint.labelMode} name='label_mode_dropdown'>
+                <MVCustomSelectOption value='none'>None</MVCustomSelectOption>
+                <MVCustomSelectOption value='labels'>Crystallographic labels</MVCustomSelectOption>
+                <MVCustomSelectOption value='element'>Element</MVCustomSelectOption>
+                <MVCustomSelectOption value='isotope'>Isotope</MVCustomSelectOption>
+            </MVCustomSelect>
             <span className='sep-1' />
             <MVRadioGroup label='Selection mode' onSelect={selectMode} selected={selint.selectionMode} name='selec_mode_radio'>
                 <MVRadioButton value='atom'>Atom</MVRadioButton>
