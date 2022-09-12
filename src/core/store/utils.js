@@ -96,7 +96,8 @@ function formatNumber(value, unit, precision=2) {
     // and a precision
     // returns a string with the number and the unit
     
-    // special hadnling for kHz
+    // special handling for Hz
+    // we want the precision to be relative to the MHz scale
     if (unit === 'Hz') {
         // -- handle negative values -- //
         if (value < 0) {
@@ -115,19 +116,17 @@ function formatNumber(value, unit, precision=2) {
         if (value > 1e6) {
             value /= 1e6;
             prefix = 'M';
-            // hard-coded precision for MHz
-            precision = 3;
         }
         // Convert to kHz if value is > 1 kHz but < 1 MHz
         else if (value > 1e3) {
             value /= 1e3;
             prefix = 'k';
-            // hard-coded precision for kHz
-            precision = 1;
+            // scale precision to kHz scale (minimum 0)
+            precision = Math.max(0, precision-3);
         }
         else {
-            // hard-coded precision for Hz
-            precision = 0;
+            // scale precision to Hz scale (minimum 0)
+            precision = Math.max(0, precision-6);
         }
         unit = prefix + 'Hz';
 
