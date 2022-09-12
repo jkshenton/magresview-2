@@ -1,4 +1,4 @@
-import { centerDisplayed } from '../../../utils';
+// import { centerDisplayed } from '../../../utils';
 
 function viewsListener(state) {
 
@@ -32,7 +32,7 @@ function viewsListener(state) {
     displ.setProperty('opacity', 1.0);
 
     // Center model
-    centerDisplayed(app);
+    // centerDisplayed(app);
 
     // We now update all visualizations that may be changed as a result of this
     return  {};
