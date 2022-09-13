@@ -59,12 +59,22 @@ function MVPlot1D(props) {
     const show = (pltint.mode !== 'none');
 
     let lineprops = {};
+    // y axis properties
+    let leftaxis = {}
     // Custom mode-dependent properties
     switch (pltint.mode) {
         case 'line-1d':
             lineprops = {
-                enablePoints: false                
+                enablePoints: false,                
+                enableArea: true,  
             }
+            leftaxis = {
+                legend: 'Intensity',
+                legendOffset: -40,
+                legendPosition: 'middle'
+            }
+
+
             break;
         case 'bars-1d':
             lineprops = {
@@ -75,17 +85,45 @@ function MVPlot1D(props) {
                 pointLabelYOffset: 0,
                 lineWidth: 0
             };
+            // y axis properties
+            leftaxis = {
+                // no axis label
+                legend: '',
+                // no ticks
+                tickValues: 0,
+            };
+
             break;
         default: 
             break;
     }
 
+    // x axis properties
+    let bottomaxis = {
+        orient: 'bottom',
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        // if pltint.useRefTable is true, then we're plotting chemical shifts
+        legend: pltint.useRefTable ? 'Chemical shift/ppm' : 'Shielding/ppm',
+        legendOffset: 36,
+        legendPosition: 'middle'
+    };
+
+
     return (<MVModal title="Spectral 1D plot" display={show}
         noFooter={true} resizable={true} draggable={true} onClose={() => { pltint.mode = 'none'; }}>
         <div style={{backgroundColor: 'white', color: 'black'}}>
-        {show?
+        {show? 
+            // if show is true, then we're in one of the plot modes
             <Line
             {...lineprops}
+            isInteractive={true}
+            useMesh={true}
+            enableCrosshair={true}
+            xFormat=" >-.3f"
+            yFormat=" >-.3f"
+            // tooltip={tooltip}
             width={width}
             height={height} 
             colors={{ scheme: 'category10' }}
@@ -102,6 +140,9 @@ function MVPlot1D(props) {
                 max: pltint.floatRangeY[1]
             }}
             layers={layers}
+            axisBottom={bottomaxis}
+            axisLeft={leftaxis}
+            motionConfig="gentle"
             />           
         : null }
         </div>

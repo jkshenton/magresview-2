@@ -30,7 +30,7 @@ const initialPlotsState = {
     plots_min_x: 0,
     plots_max_x: 100.0,
     plots_min_y: 0,
-    plots_max_y: 1.0,
+    plots_max_y: 5.0,
     plots_peak_width: 2.0,
     plots_x_steps: 100,
     plots_data: null
@@ -69,7 +69,12 @@ class PlotsInterface extends DataCheckInterface {
     }
 
     set useRefTable(v) {
-        this.dispatch(makePlotAction({ plots_use_refs: v }));
+        this.dispatch(makePlotAction({ 
+            plots_use_refs: v,
+            // switch xmin and xmax
+            plots_min_x: -this.state.plots_max_x,
+            plots_max_x: -this.state.plots_min_x,
+         }));
     }   
 
     get showAxes() {
@@ -134,6 +139,14 @@ class PlotsInterface extends DataCheckInterface {
         return [ymin, ymax];
     }
 
+    get xSteps() {
+        return this.state.plots_x_steps;
+    }
+
+    set xSteps(v) {
+        this.dispatch(makePlotAction({ plots_x_steps: v }));
+    }
+
     setRange(vmin=null, vmax=null, axis='x') {
 
         if ('xy'.indexOf(axis) < 0) {
@@ -157,6 +170,43 @@ class PlotsInterface extends DataCheckInterface {
     get data() {
         return this.state.plots_data;
     }
+
+    // download existing svg
+    // TODO: there must be a way of selecting from the react component instead of 
+    // using the DOM directly
+    downloadSVG() {
+        let node = "#root > div > div > div.mv-control.mv-modal.mv-modal-draggable.mv-modal-resizable > div.mv-modal-content > div > div > svg";
+        let svg = document.querySelector(node);
+        let svgData = new XMLSerializer().serializeToString(svg);
+        let svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+        let svgUrl = URL.createObjectURL(svgBlob);
+        let downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = "plot.svg";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    // download data
+    downloadData() {
+        let data = this.data[0].data;
+        let csvContent = "data:text/csv;charset=utf-8,";
+        // x header depends on if use_refs is true
+        let xlabel = this.useRefTable? "Chemical shift /ppm" : "Shielding /ppm";
+        csvContent += xlabel + ", Intensity \n";
+        data.forEach(function(r) {
+            let row = r.x + ", " + r.y + "\n";
+            csvContent += row;
+        });
+        let encodedUri = encodeURI(csvContent);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "magresview_plot_data.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
 
     get bkgImage() {
         if (this.state.plots_bkg_img_url) {

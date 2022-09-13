@@ -16,7 +16,7 @@ import './MVSidebarPlots.css';
 
 import MagresViewSidebar from './MagresViewSidebar';
 
-import MVFile from '../../controls/MVFile';
+// import MVFile from '../../controls/MVFile';
 import MVButton from '../../controls/MVButton';
 import MVCheckBox from '../../controls/MVCheckBox';
 import MVText from '../../controls/MVText';
@@ -27,7 +27,7 @@ import { usePlotsInterface } from '../store';
 function MVSidebarPlots(props) {
 
     const pltint = usePlotsInterface();
-    const formats = '.png,.jpg,.jpeg';
+    // const formats = '.png,.jpg,.jpeg';
 
     function setMinX(v) {
         pltint.setRange(v);
@@ -57,11 +57,11 @@ function MVSidebarPlots(props) {
         <div className='mv-sidebar-block'>
             <MVCheckBox checked={pltint.useRefTable} onCheck={(v) => { pltint.useRefTable = v; }}>Show chemical shifts (use references)</MVCheckBox>
         </div>
-        <div className='mv-sidebar-block'>
+        {/* <div className='mv-sidebar-block'>
             Background spectrum image
             <MVFile filetypes={formats} onSelect={(f) => { pltint.loadBkgImage(f); }} notext={false} multiple={false}/>
             <MVButton onClick={() => { pltint.clearBkgImage(); }}>Clear image</MVButton>
-        </div>
+        </div> */}
         <div className='mv-sidebar-grid'>
             <MVCheckBox checked={pltint.showAxes} onCheck={(v) => { pltint.showAxes = v; }}>Show axes</MVCheckBox>
             <MVCheckBox checked={pltint.showGrid} onCheck={(v) => { pltint.showGrid = v; }}>Show grid</MVCheckBox>
@@ -82,6 +82,20 @@ function MVSidebarPlots(props) {
         <div className='mv-sidebar-row' style={{alignItems: 'center'}}>
         Peak width: &nbsp;
             <MVText size='3' value={pltint.peakW} onChange={(v) => { pltint.peakW = v; }} filter='[\-]*[0-9]*(?:\.[0-9]*)?' /> &nbsp; ppm
+        </div>
+        <span className='sep-1' />
+        <div className='mv-sidebar-row' style={{alignItems: 'center'}}>
+        X steps: &nbsp;
+            <MVText size='3' value={pltint.xSteps} onChange={(v) => { pltint.xSteps = v; }} filter='[\-]*[0-9]*(?:\.[0-9]*)?' />
+        </div>
+        <span className='sep-1' />
+        <div className='mv-sidebar-grid'>
+            {/* download svg */}
+            {/* disable if pltint.mode is none */}
+            <MVButton onClick={() => { pltint.downloadSVG(); }} disabled={pltint.mode === 'none'}>Download SVG</MVButton>
+            {/* download data */}
+            {/* disable if pltint.mode is none */}
+            <MVButton onClick={() => { pltint.downloadData(); }} disabled={pltint.mode === 'none'}>Download data (.csv)</MVButton>
         </div>
     </MagresViewSidebar>);
 }
