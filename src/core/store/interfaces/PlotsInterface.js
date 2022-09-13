@@ -193,9 +193,10 @@ class PlotsInterface extends DataCheckInterface {
         let csvContent = "data:text/csv;charset=utf-8,";
         // x header depends on if use_refs is true
         let xlabel = this.useRefTable? "Chemical shift /ppm" : "Shielding /ppm";
+        let factor = this.useRefTable? -1 : 1;
         csvContent += xlabel + ", Intensity \n";
         data.forEach(function(r) {
-            let row = r.x + ", " + r.y + "\n";
+            let row = factor*r.x + ", " + r.y + "\n";
             csvContent += row;
         });
         let encodedUri = encodeURI(csvContent);

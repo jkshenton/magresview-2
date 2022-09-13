@@ -107,7 +107,12 @@ function MVPlot1D(props) {
         // if pltint.useRefTable is true, then we're plotting chemical shifts
         legend: pltint.useRefTable ? 'Chemical shift/ppm' : 'Shielding/ppm',
         legendOffset: 36,
-        legendPosition: 'middle'
+        legendPosition: 'middle',
+        format:function(value){ 
+            // abs value rounded to 3 decimals
+            let reverse = pltint.useRefTable ? -1 : 1;
+            return (reverse*value).toFixed(0);
+        }
     };
 
 
@@ -123,7 +128,6 @@ function MVPlot1D(props) {
             enableCrosshair={true}
             xFormat=" >-.3f"
             yFormat=" >-.3f"
-            // tooltip={tooltip}
             width={width}
             height={height} 
             colors={{ scheme: 'category10' }}
