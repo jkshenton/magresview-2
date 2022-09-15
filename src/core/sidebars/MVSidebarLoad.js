@@ -1,12 +1,13 @@
 import MagresViewSidebar from './MagresViewSidebar';
 
-import { AiFillEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiFillEye, AiOutlineEyeInvisible, AiOutlineReload } from 'react-icons/ai';
 import { MdDeleteForever } from 'react-icons/md';
 
 import MVFile from '../../controls/MVFile';
 import MVBox from '../../controls/MVBox';
 import MVCheckBox from '../../controls/MVCheckBox';
 import MVListSelect, { MVListSelectOption } from '../../controls/MVListSelect';
+import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 import { useAppInterface } from '../store';
 
 import React, { useState } from 'react';
@@ -79,18 +80,24 @@ function MVSidebarLoad(props) {
 
         return (<MVListSelectOption key={i} value={m} icon={model_icon}>
             {m}
-            <MdDeleteForever style={{color: 'var(--err-color-2)'}} size={22} onClick={() => { appint.delete(m); }} />
+            <AiOutlineReload style={{color: 'var(--dark-color-1)'}} size={22} onClick={() => { appint.reload(m); }}/>
+            <MdDeleteForever style={{color: 'var(--err-color-2)'}} size={22} onClick={() => { appint.delete(m); }}/>
         </MVListSelectOption>);
     }
 
     return (<MagresViewSidebar show={props.show} title='Load file'>
         <div className='mv-sidebar-block'>
             <MVFile filetypes={file_formats.join(',')} onSelect={loadModel} notext={true} multiple={true}/>
-            <MVCheckBox onCheck={(v) => { appint.loadAsMol = v }} checked={appint.loadAsMol}>Load as molecular crystal</MVCheckBox>
+            <h4>Load as molecular crystal?</h4>
+            <MVCustomSelect onSelect={(v) => { appint.loadAsMol = v; }} selected={appint.loadAsMol} name='loadasmol_dropdown'>
+                <MVCustomSelectOption value={null}>Auto</MVCustomSelectOption>
+                <MVCustomSelectOption value={false}>No</MVCustomSelectOption>
+                <MVCustomSelectOption value={true}>Yes</MVCustomSelectOption>
+            </MVCustomSelect>
             <MVCheckBox onCheck={(v) => { appint.useNMRIsotopes = v }} checked={appint.useNMRIsotopes}>Use only NMR active isotopes</MVCheckBox>
         </div>
         <h4>Models:</h4>
-        <MVListSelect selected={state.list_selected} onSelect={(v) => { setState({...state, list_selected: v}); }}>
+        <MVListSelect selected={state.list_selected} onSelect={(v) => { setState({...state, list_selected: v}); appint.display(v);}}>
             {models.map(makeModelOption)}
         </MVListSelect>
         <span className='sep-1' />

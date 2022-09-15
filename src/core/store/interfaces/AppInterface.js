@@ -38,7 +38,7 @@ const initialAppState = {
     app_sidebar: 'load',
     app_default_displayed: null,
     app_model_queued: null,
-    app_load_as_mol: false,
+    app_load_as_mol: null, // crystvis-js will try to figure out what's appropriate...
     app_use_nmr_isos: true
 };
 
@@ -62,6 +62,32 @@ function appDisplayModel(state, m) {
             ...initialEulerState
         };
     }
+
+    // Return data for dispatch
+    return {
+        ...data,
+        app_model_queued: m,
+        listen_update: [Events.SEL_LABELS, Events.CSCALE,
+                        Events.MS_ELLIPSOIDS, Events.MS_LABELS,
+                        Events.EFG_ELLIPSOIDS, Events.EFG_LABELS, 
+                        Events.DIP_LINKS, Events.JC_LINKS]
+    };
+}
+
+function appReloadModel(m) {
+
+    let data = {};
+
+    // We turn visualizations off
+    data = {
+        ...initialSelState,
+        ...initialCScaleState,
+        ...initialMSState,
+        ...initialEFGState,
+        ...initialDipState,
+        ...initialJCoupState,
+        ...initialEulerState
+    };
 
     // Return data for dispatch
     return {
@@ -159,7 +185,8 @@ class AppInterface extends BaseInterface {
     get loadAsMol() {
         return this.state.app_load_as_mol;
     }
-
+    // if null, crystvis-js will check if the model constains C and H atoms and 
+    // if so, will consider it a molecular crystal. Otherwise a boolean. 
     set loadAsMol(v) {
         this.dispatch({
             type: 'set',
@@ -262,6 +289,14 @@ class AppInterface extends BaseInterface {
         this.dispatch({
             type: 'call',
             function: appDisplayModel,
+            arguments: [m]
+        });
+    }
+
+    reload(m) {
+        this.dispatch({
+            type: 'call',
+            function: appReloadModel,
             arguments: [m]
         });
     }

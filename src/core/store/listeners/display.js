@@ -1,4 +1,4 @@
-import { centerDisplayed } from '../../../utils';
+// import { centerDisplayed } from '../../../utils';
 
 function displayListener(state) {
 
@@ -15,7 +15,7 @@ function displayListener(state) {
         };
 
         // Center model
-        centerDisplayed(app);
+        // centerDisplayed(app);
     }
 
     return data;
