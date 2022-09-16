@@ -1,0 +1,5 @@
+/*  'tooltip-container' */
+
+.tooltip-container {
+    z-index: 10000;
+}

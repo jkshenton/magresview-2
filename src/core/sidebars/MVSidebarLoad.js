@@ -1,6 +1,7 @@
 import MagresViewSidebar from './MagresViewSidebar';
 
-import { AiFillEye, AiOutlineEyeInvisible, AiOutlineReload } from 'react-icons/ai';
+import { AiFillEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { IoMdRefresh } from 'react-icons/io';
 import { MdDeleteForever } from 'react-icons/md';
 
 import MVFile from '../../controls/MVFile';
@@ -8,7 +9,9 @@ import MVBox from '../../controls/MVBox';
 import MVCheckBox from '../../controls/MVCheckBox';
 import MVListSelect, { MVListSelectOption } from '../../controls/MVListSelect';
 import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
+import MVTooltip from '../../controls/MVTooltip';
 import { useAppInterface } from '../store';
+
 
 import React, { useState } from 'react';
 /**
@@ -26,6 +29,7 @@ import React, { useState } from 'react';
  */
 
 import _ from 'lodash';
+import { tooltip_molecular_crystal, tooltip_nmr_active } from './tooltip_messages';
 
 // Accepted file formats
 const file_formats = ['.cif', '.xyz', '.magres', '.cell'];
@@ -80,7 +84,7 @@ function MVSidebarLoad(props) {
 
         return (<MVListSelectOption key={i} value={m} icon={model_icon}>
             {m}
-            <AiOutlineReload style={{color: 'var(--dark-color-1)'}} size={22} onClick={() => { appint.reload(m); }}/>
+            <IoMdRefresh style={{color: 'var(--dark-color-1)'}} size={22} onClick={() => { appint.reload(m); }}/>
             <MdDeleteForever style={{color: 'var(--err-color-2)'}} size={22} onClick={() => { appint.delete(m); }}/>
         </MVListSelectOption>);
     }
@@ -88,15 +92,27 @@ function MVSidebarLoad(props) {
     return (<MagresViewSidebar show={props.show} title='Load file'>
         <div className='mv-sidebar-block'>
             <MVFile filetypes={file_formats.join(',')} onSelect={loadModel} notext={true} multiple={true}/>
-            <h4>Load as molecular crystal?</h4>
-            <MVCustomSelect onSelect={(v) => { appint.loadAsMol = v; }} selected={appint.loadAsMol} name='loadasmol_dropdown'>
-                <MVCustomSelectOption value={null}>Auto</MVCustomSelectOption>
-                <MVCustomSelectOption value={false}>No</MVCustomSelectOption>
-                <MVCustomSelectOption value={true}>Yes</MVCustomSelectOption>
-            </MVCustomSelect>
-            <MVCheckBox onCheck={(v) => { appint.useNMRIsotopes = v }} checked={appint.useNMRIsotopes}>Use only NMR active isotopes</MVCheckBox>
+            <span className='sep-1' />
+            <div className='mv-sidebar-block'>
+                <div className='mv-sidebar-tooltip-grid'>
+                    <div>Display unwrapped molecular units?&nbsp;</div>
+                    <MVTooltip tooltipText={tooltip_molecular_crystal} />
+                    <MVCustomSelect onSelect={(v) => { appint.loadAsMol = v; }} selected={appint.loadAsMol} name='loadasmol_dropdown'>
+                        <MVCustomSelectOption value={null}>Auto</MVCustomSelectOption>
+                        <MVCustomSelectOption value={true}>Yes</MVCustomSelectOption>
+                        <MVCustomSelectOption value={false}>No</MVCustomSelectOption>
+                    </MVCustomSelect>
+                </div>
+            </div>
+            <span className='sep-1' />
+            <div className='mv-sidebar-block'>
+                <div className='mv-sidebar-tooltip-grid'>
+                    <MVCheckBox onCheck={(v) => { appint.useNMRIsotopes = v }} checked={appint.useNMRIsotopes}>Use only NMR active isotopes</MVCheckBox>
+                    <MVTooltip tooltipText={tooltip_nmr_active} />
+                </div>
+            </div>
         </div>
-        <h4>Models:</h4>
+        <h4>Files loaded:</h4>
         <MVListSelect selected={state.list_selected} onSelect={(v) => { setState({...state, list_selected: v}); appint.display(v);}}>
             {models.map(makeModelOption)}
         </MVListSelect>

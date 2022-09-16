@@ -68,6 +68,12 @@
   align-items: stretch;
 }
 
+.mv-sidebar .mv-sidebar-tooltip-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.1fr;
+  align-items: stretch;
+}
+
 .mv-sidebar .sep-1 {
   display: block;
   margin-bottom: 1em;
