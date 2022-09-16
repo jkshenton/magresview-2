@@ -71,9 +71,6 @@ class PlotsInterface extends DataCheckInterface {
     set useRefTable(v) {
         this.dispatch(makePlotAction({ 
             plots_use_refs: v,
-            // switch xmin and xmax
-            plots_min_x: -this.state.plots_max_x,
-            plots_max_x: -this.state.plots_min_x,
          }));
     }   
 

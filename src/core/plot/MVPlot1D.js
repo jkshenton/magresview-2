@@ -108,11 +108,6 @@ function MVPlot1D(props) {
         legend: pltint.useRefTable ? 'Chemical shift/ppm' : 'Shielding/ppm',
         legendOffset: 36,
         legendPosition: 'middle',
-        format:function(value){ 
-            // abs value rounded to 3 decimals
-            let reverse = pltint.useRefTable ? -1 : 1;
-            return (reverse*value).toFixed(0);
-        }
     };
 
 
@@ -136,7 +131,8 @@ function MVPlot1D(props) {
             xScale={{
                 type: 'linear',
                 min: pltint.floatRangeX[0],
-                max: pltint.floatRangeX[1]
+                max: pltint.floatRangeX[1],
+                reverse: pltint.useRefTable? true : false
             }}
             yScale={{
                 type: 'linear',
