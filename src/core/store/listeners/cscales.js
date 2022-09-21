@@ -17,6 +17,7 @@ function colorScaleListener(state) {
     let next_greyed = null;
 
     const cstype = state.cscale_type;
+    const cmap = 'portland';
 
     // Restore color to the grayed out atoms
     if (current_greyed) {
@@ -42,8 +43,14 @@ function colorScaleListener(state) {
 
         let minv = _.min(values);
         let maxv = _.max(values);
-        let cs = getColorScale(minv, maxv, 'portland');
+        let cs = getColorScale(minv, maxv, cmap);
         let colors = values.map((v) => cs.getColor(v).toHexString());
+
+        // store minv and maxv TODO: is this the correct place to do this?
+        state.cscale_lims = [minv, maxv];
+
+        // store units
+        state.cscale_units = nmrdata[0];
 
         next_view.setProperty('color', colors);
         next_greyed.setProperty('color', 0x888888);

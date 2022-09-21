@@ -24,6 +24,7 @@ import MVCheckBox from '../../controls/MVCheckBox';
 import MVRange from '../../controls/MVRange';
 import MVButton from '../../controls/MVButton';
 import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
+import MVCScaleBar from '../../controls/MVCScaleBar';
 
 function MVSidebarEFG(props) {
 
@@ -56,6 +57,8 @@ function MVSidebarEFG(props) {
                 <MVRadioButton value='efg_asymm'>Asymmetry</MVRadioButton>
                 <MVRadioButton value='efg_Q'>|Quadrupole Coupling|</MVRadioButton>
              </MVRadioGroup>
+        {/* hide scalebar if msintcolorScaleType is 'none' */}
+        <MVCScaleBar label={efgint.colorScaleType} hidden={efgint.colorScaleType === 'none'} lims={efgint.colorScaleLimits} units={efgint.colorScaleUnits}/>
         </div>
         <div className={chainClasses('mv-warning-noms', has_efg? 'hidden' : '')}>No EFG data found</div>
     </MagresViewSidebar>);

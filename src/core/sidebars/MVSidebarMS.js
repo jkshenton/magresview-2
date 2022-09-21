@@ -27,6 +27,7 @@ import MVButton from '../../controls/MVButton';
 import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
 import MVModal from '../../controls/MVModal';
 import MVText from '../../controls/MVText';
+import MVCScaleBar from '../../controls/MVCScaleBar';
 
 function MVReferenceTable(props) {
 
@@ -88,6 +89,7 @@ function MVSidebarMS(props) {
         has_ms = msint.hasData;
     }
 
+
     return (<MagresViewSidebar show={props.show} title='Magnetic Shielding'>
         <div className={chainClasses('mv-sidebar-block', has_ms? '' : 'hidden')}>
              <MVCheckBox onCheck={(v) => { msint.hasEllipsoids = v; }} checked={msint.hasEllipsoids}>Ellipsoids</MVCheckBox>
@@ -109,6 +111,8 @@ function MVSidebarMS(props) {
                 <MVRadioButton value='ms_aniso'>Anisotropy</MVRadioButton>
                 <MVRadioButton value='ms_asymm'>Asymmetry</MVRadioButton>
              </MVRadioGroup>
+             {/* hide scalebar if msintcolorScaleType is 'none' */}
+             <MVCScaleBar label={msint.colorScaleType} hidden={msint.colorScaleType === 'none'} lims={msint.colorScaleLimits} units={msint.colorScaleUnits} />
              <MVButton onClick={() => { setState({...state, showRefTable: true}) }}>Set References</MVButton>
              <MVReferenceTable display={state.showRefTable} close={() => { setState({...state, showRefTable: false}) }}/>
         </div>

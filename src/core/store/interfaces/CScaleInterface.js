@@ -18,7 +18,9 @@ import { makeSelector, BaseInterface } from '../utils';
 const initialCScaleState = {
     cscale_view: null,
     cscale_displ: null,
-    cscale_type: 'none'
+    cscale_type: 'none',
+    cscale_lims: [0,1],
+    cscale_units: ''
 };
 
 // A base class not meant to be used directly, but inherited by all interfaces
@@ -43,6 +45,14 @@ class CScaleInterface extends BaseInterface {
 
     get colorScalePrefix() {
         return this.colorScaleType.split('_', 2)[0];
+    }
+
+    get colorScaleLimits() {
+        return this.state.cscale_lims;
+    }
+
+    get colorScaleUnits() {
+        return this.state.cscale_units;
     }
 
 }

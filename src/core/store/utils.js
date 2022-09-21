@@ -81,9 +81,9 @@ function getNMRData(view, datatype, tenstype='ms', reftable=null) {
         case 'Q':
             values = tensors.map((T, i) => {
                 let iD = view.atoms[i].isotopeData;
-                return T.efgAtomicToHz(iD.Q).haeberlen_eigenvalues[2];
+                return T.efgAtomicToHz(iD.Q).haeberlen_eigenvalues[2] / 1e6;
             });
-            units = 'Hz'; // if this changes, change formatNumber as well!
+            units = 'MHz'; // if this changes, change formatNumber as well!
             break;
         default:
             break;
@@ -98,7 +98,7 @@ function formatNumber(value, unit, precision=2) {
     
     // special handling for Hz
     // we want the precision to be relative to the MHz scale
-    if (unit === 'Hz') {
+    if (unit === 'MHz') {
         // -- handle negative values -- //
         if (value < 0) {
             return '-' + formatNumber(-value, unit, precision);
@@ -106,29 +106,27 @@ function formatNumber(value, unit, precision=2) {
 
         // -- handle positive values -- //
         
-        // suppress label completely if value is less than 1e-8 kHz
+        // suppress label completely if value is less than 1e-8 MHz
         if (value < 1e-8) {
             return '';
         }
 
-        let prefix = '';
-        // convert to MHz if value is greater than 1 MHz
-        if (value > 1e6) {
-            value /= 1e6;
-            prefix = 'M';
-        }
-        // Convert to kHz if value is > 1 kHz but < 1 MHz
-        else if (value > 1e3) {
-            value /= 1e3;
-            prefix = 'k';
+        // convert to kHz if value is less than 1 MHz but larger than 1 kHz
+        if (value < 1 && value > 1e-3) {
+            value *= 1e3;
+            unit = 'kHz';
             // scale precision to kHz scale (minimum 0)
             precision = Math.max(0, precision-3);
         }
-        else {
+        // Convert to Hz if value is less than 1 kHz but larger than 1e-2 Hz
+        else if (value < 1e-3 && value > 1e-8) {
+            value *= 1e6;
+            unit = 'Hz';
             // scale precision to Hz scale (minimum 0)
             precision = Math.max(0, precision-6);
         }
-        unit = prefix + 'Hz';
+        else {;
+        }
 
     }
     return value.toFixed(precision) + ' ' + unit;
