@@ -1,6 +1,6 @@
 .mv-checkbox {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 
   --check-color: var(--ms-color-2);

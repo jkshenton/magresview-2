@@ -66,6 +66,9 @@ function MVSidebarPlots(props) {
             <MVCheckBox checked={pltint.showAxes} onCheck={(v) => { pltint.showAxes = v; }}>Show axes</MVCheckBox>
             <MVCheckBox checked={pltint.showGrid} onCheck={(v) => { pltint.showGrid = v; }}>Show grid</MVCheckBox>
         </div>
+        <div className='mv-sidebar-grid'>
+            <MVCheckBox checked={pltint.showLabels} onCheck={(v) => { pltint.showLabels = v; }}>Show labels</MVCheckBox>
+        </div>
         <span className='sep-1' />
         <div className='mv-sidebar-row' style={{alignItems: 'center'}}>
         X range: &nbsp;

@@ -33,13 +33,25 @@ function plotsListener(state) {
     const w = parseFloat(state.plots_peak_width);
     const n = parseInt(state.plots_x_steps);
     const peaks = getNMRData(view, nmr_mode, 'ms', ref_table)[1];         
+    const labels = view.atoms.map((a) => a.crystLabel);
     const rangepeaks = peaks.filter((x) => (x+w >= minx && x-w <= maxx));
+    // filter labels by peak positions
+    const rangelabels = labels.filter((x, i) => (rangepeaks.indexOf(peaks[i]) >= 0));
+    // check that rangelabels has the same length as rangepeaks
+    if (rangelabels.length !== rangepeaks.length) {
+        throw Error('Mismatch between labels and peaks');
+    }
+    // sort labels and peaks by peak position
+    const sorted = _.zip(rangepeaks, rangelabels).sort((a, b) => (a[0] - b[0]));
+    const sortedpeaks = sorted.map((x) => x[0]);
+    const sortedlabels = sorted.map((x) => x[1]);
+
 
     switch(state.plots_mode) {
         case 'bars-1d':
 
-            xaxis = rangepeaks;
-            yaxis = xaxis.map(() => (maxy));
+            xaxis = sortedpeaks;
+            yaxis = xaxis.map(() => (maxy * 0.75));
 
             break;
         case 'line-1d':
@@ -50,7 +62,7 @@ function plotsListener(state) {
 
             xaxis = _.range(n).map((i) => (minx + (maxx-minx)*i/(n-1)));
             yaxis = xaxis.map((x) => {
-                return rangepeaks.reduce((s, x0) => (s + lorentzian(x, x0, w)), 0);
+                return sortedpeaks.reduce((s, x0) => (s + lorentzian(x, x0, w)), 0);
             });
 
             break;
@@ -65,7 +77,11 @@ function plotsListener(state) {
         data: xaxis.map((x, i) => ({
             x: x,
             y: yaxis[i]
-        }))
+        })),
+        // return labels for peaks in the range
+        // or empty array if no peaks in range
+        peaks: sortedpeaks? sortedpeaks : [],
+        labels: sortedlabels? sortedlabels: [],
     }];
 
     return {

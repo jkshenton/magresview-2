@@ -33,7 +33,8 @@ const initialPlotsState = {
     plots_max_y: 5.0,
     plots_peak_width: 2.0,
     plots_x_steps: 100,
-    plots_data: null
+    plots_data: null,
+    plots_show_labels: true,
 };
 
 function makePlotAction(data) {
@@ -100,6 +101,19 @@ class PlotsInterface extends DataCheckInterface {
         });
     }
 
+    get showLabels() {
+        return this.state.plots_show_labels;
+    }
+
+    set showLabels(v) {
+        this.dispatch({
+            type: 'update',
+            data: {
+                plots_show_labels: v
+            }
+        });
+    }
+    
     get peakW() {
         return this.state.plots_peak_width;
     }
