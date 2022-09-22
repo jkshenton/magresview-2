@@ -14,6 +14,11 @@
     
 }
 
+.mv-cscale-tick-label {
+    vertical-align: top;
+    font-size: 0.8em;
+}
+
 
 /* the table that holds the color bar */
 .mv-cscale-table {
@@ -22,4 +27,5 @@
     table-layout: fixed;
     /* no border */
     border-spacing: 1px;
+    vertical-align: top;
 }

@@ -17,7 +17,7 @@ function colorScaleListener(state) {
     let next_greyed = null;
 
     const cstype = state.cscale_type;
-    const cmap = 'portland';
+    const cmap = state.cscale_cmap;
 
     // Restore color to the grayed out atoms
     if (current_greyed) {

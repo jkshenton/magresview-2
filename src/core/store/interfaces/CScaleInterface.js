@@ -20,7 +20,8 @@ const initialCScaleState = {
     cscale_displ: null,
     cscale_type: 'none',
     cscale_lims: [0,1],
-    cscale_units: ''
+    cscale_units: '',
+    cscale_cmap: 'viridis',
 };
 
 // A base class not meant to be used directly, but inherited by all interfaces
@@ -53,6 +54,20 @@ class CScaleInterface extends BaseInterface {
 
     get colorScaleUnits() {
         return this.state.cscale_units;
+    }
+
+    get colorScaleCmap() {
+        return this.state.cscale_cmap;
+    }
+
+    set colorScaleCmap(v) {
+        this.dispatch({
+            type: 'update',
+            data: {
+                cscale_cmap: v,
+                listen_update: [Events.CSCALE]
+            }
+        });
     }
 
 }

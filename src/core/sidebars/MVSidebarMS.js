@@ -28,6 +28,7 @@ import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
 import MVModal from '../../controls/MVModal';
 import MVText from '../../controls/MVText';
 import MVCScaleBar from '../../controls/MVCScaleBar';
+import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 
 function MVReferenceTable(props) {
 
@@ -96,6 +97,8 @@ function MVSidebarMS(props) {
              <MVRange min={0.01} max={0.5} step={0.005} value={msint.ellipsoidScale}
                       onChange={(s) => { msint.ellipsoidScale = s; }} disabled={!msint.hasEllipsoids}>Ellipsoid scale</MVRange>
              <MVButton onClick={() => { msint.ellipsoidScale = 0; }} disabled={!msint.hasEllipsoids}>Auto scale</MVButton>
+             <MVButton onClick={() => { setState({...state, showRefTable: true}) }}>Set References</MVButton>
+             <MVReferenceTable display={state.showRefTable} close={() => { setState({...state, showRefTable: false}) }}/>
              <MVRadioGroup label='Show labels' onSelect={(v) => { msint.labelsMode = v; }} selected={msint.labelsMode} name='ms_label_radio'>
                 <MVRadioButton value='none'>None</MVRadioButton>
                 <MVRadioButton value='iso'>Isotropy (ppm)</MVRadioButton>
@@ -112,9 +115,19 @@ function MVSidebarMS(props) {
                 <MVRadioButton value='ms_asymm'>Asymmetry</MVRadioButton>
              </MVRadioGroup>
              {/* hide scalebar if msintcolorScaleType is 'none' */}
-             <MVCScaleBar label={msint.colorScaleType} hidden={msint.colorScaleType === 'none'} lims={msint.colorScaleLimits} units={msint.colorScaleUnits} />
-             <MVButton onClick={() => { setState({...state, showRefTable: true}) }}>Set References</MVButton>
-             <MVReferenceTable display={state.showRefTable} close={() => { setState({...state, showRefTable: false}) }}/>
+             <MVCScaleBar label={msint.colorScaleType} 
+             hidden={msint.colorScaleType === 'none'}  
+             lims={msint.colorScaleLimits} 
+             cmap={msint.colorScaleCmap}
+             units={msint.colorScaleUnits} />
+             Color map
+            <MVCustomSelect onSelect={(v) => { msint.colorScaleCmap = v; }} selected={msint.colorScaleCmap} name='cmap_dropdown'>
+                <MVCustomSelectOption value='viridis'>Viridis</MVCustomSelectOption>
+                <MVCustomSelectOption value='portland'>Portland</MVCustomSelectOption>
+                <MVCustomSelectOption value='RdBu'>Red-Blue</MVCustomSelectOption>
+                <MVCustomSelectOption value='inferno'>Inferno</MVCustomSelectOption>
+                <MVCustomSelectOption value='jet'>Jet</MVCustomSelectOption>
+            </MVCustomSelect>
         </div>
         <div className={chainClasses('mv-warning-noms', has_ms? 'hidden': '')}>No MS data found</div>
     </MagresViewSidebar>);

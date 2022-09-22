@@ -25,6 +25,7 @@ import MVRange from '../../controls/MVRange';
 import MVButton from '../../controls/MVButton';
 import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
 import MVCScaleBar from '../../controls/MVCScaleBar';
+import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 
 function MVSidebarEFG(props) {
 
@@ -58,7 +59,19 @@ function MVSidebarEFG(props) {
                 <MVRadioButton value='efg_Q'>|Quadrupole Coupling|</MVRadioButton>
              </MVRadioGroup>
         {/* hide scalebar if msintcolorScaleType is 'none' */}
-        <MVCScaleBar label={efgint.colorScaleType} hidden={efgint.colorScaleType === 'none'} lims={efgint.colorScaleLimits} units={efgint.colorScaleUnits}/>
+        <MVCScaleBar label={efgint.colorScaleType} 
+                    hidden={efgint.colorScaleType === 'none'} 
+                    lims={efgint.colorScaleLimits}
+                    units={efgint.colorScaleUnits}
+                    cmap={efgint.colorScaleCmap}/>
+        Color map
+        <MVCustomSelect onSelect={(v) => { efgint.colorScaleCmap = v; }} selected={efgint.colorScaleCmap} name='cmap_dropdown'>
+                <MVCustomSelectOption value='viridis'>Viridis</MVCustomSelectOption>
+                <MVCustomSelectOption value='portland'>Portland</MVCustomSelectOption>
+                <MVCustomSelectOption value='RdBu'>Red-Blue</MVCustomSelectOption>
+                <MVCustomSelectOption value='inferno'>Inferno</MVCustomSelectOption>
+                <MVCustomSelectOption value='jet'>Jet</MVCustomSelectOption>
+        </MVCustomSelect>
         </div>
         <div className={chainClasses('mv-warning-noms', has_efg? 'hidden' : '')}>No EFG data found</div>
     </MagresViewSidebar>);
