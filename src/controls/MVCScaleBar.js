@@ -24,8 +24,8 @@ function get_colorbar(min, max, units, cmap, hidden=false) {
     let cells = [];
     let ticks = [];
     let tick_labels = [];
-    // values is a range from 0 to 1 with nshades elements
-    let values = Array.from(Array(nshades).keys()).map(x => x/nshades);
+    // values is a range from 0 to 1 (inclusive) with nshades elements
+    let values = Array.from(Array(nshades).keys()).map(x => x/(nshades-1));
     let colors = values.map((v) => cscale.getColor(v).toHexString());
     
     // indices of the ticks and tick labels
