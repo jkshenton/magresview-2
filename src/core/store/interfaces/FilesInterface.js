@@ -411,7 +411,7 @@ class FilesInterface extends BaseInterface {
                 view.atoms.forEach((a, i) => {
                     table += tableRow([
                         'shift',
-                        a.index + 1, // 1-indexed
+                        i + 1, // 1-indexed
                         -msiso[i].toFixed(prec).toString()+'p',   // -isotropy (note minus sign!)
                         -msaniso[i].toFixed(prec).toString()+'p', // -reduced anisotropy (note minus sign!)
                         msasymm[i],  // asymmetry
@@ -450,7 +450,7 @@ class FilesInterface extends BaseInterface {
                         if (cq && cq !== 0.0) {
                             table += tableRow([
                                 'quadrupole',
-                                a.index + 1, // 1-indexed
+                                i + 1, // 1-indexed
                                 q_order,
                                 cq * 1e6, // quadrupolar coupling TODO: what units?? Currently Hz
                                 efgasym[i],
@@ -482,8 +482,8 @@ class FilesInterface extends BaseInterface {
 
                     table += tableRow([
                         'dipole',
-                        a2.index + 1, // 1-indexed
-                        a1.index + 1, // 1-indexed
+                        j + 1, // 1-indexed
+                        i + 1, // 1-indexed
                         D,
                         a_deg,
                         b_deg,
@@ -507,8 +507,8 @@ class FilesInterface extends BaseInterface {
 
             //                 table += tableRow([
             //                     'jcoupling',
-            //                     a2.index + 1, // 1-indexed
-            //                     a1.index + 1, // 1-indexed
+            //                     j + 1, // 1-indexed
+            //                     i + 1, // 1-indexed
             //                     J
             //                 ], tabW, prec);
             //             }
