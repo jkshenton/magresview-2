@@ -22,6 +22,7 @@ import MVCheckBox from '../../controls/MVCheckBox';
 import MVRange from '../../controls/MVRange';
 import { useJCoupInterface } from '../store';
 import { chainClasses } from '../../utils';
+import MVButton from '../../controls/MVButton';
 
 
 function MVSidebarJCoup(props) {
@@ -66,6 +67,8 @@ function MVSidebarJCoup(props) {
                  <MVCheckBox color='var(--jcoup-color-3)' onCheck={(v) => { jcint.showSphere = v; }} checked={ jcint.showSphere } >Show selection sphere</MVCheckBox>                        
                  <MVCheckBox color='var(--jcoup-color-3)' onCheck={(v) => { jcint.homonuclearOnly = v; }} checked={ jcint.homonuclearOnly } >Show only homonuclear couplings</MVCheckBox>                        
                  <MVRange min={0} max={6} step={1} value={jcint.precision} onChange={(p) => { jcint.precision = p; }} disabled={!jcint.isOn}>Label Precision</MVRange>
+                {/* reset button */}
+                <MVButton onClick={() => { jcint.reset(); }}>Reset options</MVButton>
             </div>
         </div>
          <div className={chainClasses('mv-warning-noms', has_jc? 'hidden': '')}>No J coupling data found in file (lines beginning isc)</div>

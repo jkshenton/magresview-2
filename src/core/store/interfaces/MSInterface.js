@@ -127,6 +127,22 @@ class MSInterface extends CScaleInterface {
         return this.state.ms_references[el] || 0.0;
     }
 
+    // reset 
+    reset() {
+        // reset the parent class 
+        super.reset();
+        
+        // reset references
+        this.updateReferenceTable([null])
+
+        this.precision = initialMSState.ms_precision;
+        this.labelsMode = initialMSState.ms_labels_type;
+        this.hasEllipsoids = initialMSState.ms_ellipsoids_on;
+        this.ellipsoidScale = initialMSState.ms_ellipsoids_scale;
+
+        
+    }
+
 }
 
 function useMSInterface() {

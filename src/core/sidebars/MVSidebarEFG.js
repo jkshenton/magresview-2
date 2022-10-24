@@ -72,6 +72,8 @@ function MVSidebarEFG(props) {
                 <MVCustomSelectOption value='inferno'>Inferno</MVCustomSelectOption>
                 <MVCustomSelectOption value='jet'>Jet</MVCustomSelectOption>
         </MVCustomSelect>
+        {/* reset button */}
+        <MVButton onClick={() => { efgint.reset(); }}>Reset options</MVButton>
         </div>
         <div className={chainClasses('mv-warning-noms', has_efg? 'hidden' : '')}>No EFG data found</div>
     </MagresViewSidebar>);

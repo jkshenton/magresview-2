@@ -25,7 +25,7 @@ const initialJCoupState = {
     jc_link_names: [],
     jc_links_on: false,
     jc_central_atom: null,
-    jc_radius: 1.0,
+    jc_radius: 1.5,
     jc_sphere_show: true,
     jc_homonuclear: false,
     jc_precision: 2,
@@ -116,6 +116,16 @@ class JCoupInterface extends BaseInterface {
                 listen_update: [ Events.JC_LINKS ]
             }
         });
+    }
+
+    // reset the state to the initial state
+    reset() {
+        this.isOn = initialJCoupState.jc_links_on;
+        this.showSphere = initialJCoupState.jc_sphere_show;
+        this.precision = initialJCoupState.jc_precision;
+        this.homonuclearOnly = initialJCoupState.jc_homonuclear;
+        this.radius = initialJCoupState.jc_radius;
+
     }
     
 

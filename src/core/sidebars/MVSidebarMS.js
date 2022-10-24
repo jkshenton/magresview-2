@@ -128,6 +128,8 @@ function MVSidebarMS(props) {
                 <MVCustomSelectOption value='inferno'>Inferno</MVCustomSelectOption>
                 <MVCustomSelectOption value='jet'>Jet</MVCustomSelectOption>
             </MVCustomSelect>
+            {/* reset button */}
+            <MVButton onClick={() => { msint.reset(); }}>Reset options</MVButton>
         </div>
         <div className={chainClasses('mv-warning-noms', has_ms? 'hidden': '')}>No MS data found</div>
     </MagresViewSidebar>);

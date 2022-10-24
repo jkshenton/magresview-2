@@ -20,6 +20,7 @@ import React, { useEffect, useRef } from 'react';
 
 import MVCheckBox from '../../controls/MVCheckBox';
 import MVRange from '../../controls/MVRange';
+import MVButton from '../../controls/MVButton';
 import { useDipInterface } from '../store';
 
 
@@ -59,6 +60,8 @@ function MVSidebarDip(props) {
              <MVCheckBox color='var(--dip-color-3)' onCheck={(v) => { dipint.showSphere = v; }} checked={ dipint.showSphere } >Show selection sphere</MVCheckBox>                        
              <MVCheckBox color='var(--dip-color-3)' onCheck={(v) => { dipint.homonuclearOnly = v; }} checked={ dipint.homonuclearOnly } >Show only homonuclear couplings</MVCheckBox>                        
              <MVRange min={0} max={6} step={1} value={dipint.precision} onChange={(p) => { dipint.precision = p; }} disabled={!dipint.isOn}>Label Precision</MVRange>
+             {/* reset button */}
+             <MVButton onClick={() => { dipint.reset(); }}>Reset options</MVButton>
         </div>
     </MagresViewSidebar>);
 }

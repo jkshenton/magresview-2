@@ -79,6 +79,21 @@ class EFGInterface extends CScaleInterface {
         return (pre === 'none' || pre === 'efg');
     }
 
+    // reset 
+    reset() {
+        // reset the parent class 
+        super.reset();
+        // update the efg back to initial state
+        // this.dispatch(efgAction(initialEFGState), 
+        //              [Events.EFG_ELLIPSOIDS,
+        //               Events.EFG_LABELS]);
+        this.hasEllipsoids = initialEFGState.efg_ellipsoids_on;
+        this.ellipsoidScale = initialEFGState.efg_ellipsoids_scale;
+        this.labelsMode = initialEFGState.efg_labels_type;
+        this.precision = initialEFGState.efg_precision;
+        
+    }
+
 }
 
 function useEFGInterface() {

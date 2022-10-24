@@ -70,6 +70,16 @@ class CScaleInterface extends BaseInterface {
         });
     }
 
+    reset() {
+        this.dispatch({
+            type: 'update',
+            data: {
+                ...initialCScaleState,
+                listen_update: [Events.CSCALE]
+            }
+        });
+    }
+
 }
 
 function makeCScaleSelector(prefix, extras=[]) {

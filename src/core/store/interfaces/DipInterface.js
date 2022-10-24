@@ -25,7 +25,7 @@ const initialDipState = {
     dip_link_names: [],
     dip_links_on: false,
     dip_central_atom: null,
-    dip_radius: 1.0,
+    dip_radius: 1.5,
     dip_sphere_show: true,
     dip_homonuclear: false,
     dip_precision: 2,
@@ -112,6 +112,17 @@ class DipInterface extends BaseInterface {
             }
         });
     }
+
+    // reset options
+    reset() {
+        this.isOn = initialDipState.dip_links_on;
+        this.showSphere = initialDipState.dip_sphere_show;
+        this.precision = initialDipState.dip_precision;
+        this.homonuclearOnly = initialDipState.dip_homonuclear;
+        this.radius = initialDipState.dip_radius;
+    }
+
+
 
     bind() {
         const dispatch = this._dispatcher;
