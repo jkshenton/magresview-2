@@ -144,6 +144,7 @@ function MVSidebarSelect(props) {
             <MVRadioGroup label='Selection mode' onSelect={selectMode} selected={selint.selectionMode} name='selec_mode_radio'>
                 <MVRadioButton value='atom'>Atom</MVRadioButton>
                 <MVRadioButton value='element'>Element</MVRadioButton>
+                <MVRadioButton value='label'>Crystallographic label</MVRadioButton>
                 <MVRadioButton value='sphere'>Sphere, radius =&nbsp;
                     <MVText size='5' value={selint.selectionSphereR} filter='[0-9]*(?:\.[0-9]*)?' onChange={setR} onSubmit={setR} />&nbsp;  &#8491;
                 </MVRadioButton>

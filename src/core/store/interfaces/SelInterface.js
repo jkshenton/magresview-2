@@ -252,6 +252,13 @@ class SelInterface extends BaseInterface {
                         return app.model.view(found);
                     });
                     break;
+                case 'label':
+                    // Selector function
+                    selFunc = ((a, e) => {
+                        var found = app.model._queryLabels([a.crystLabel]);
+                        return app.model.view(found);
+                    });
+                    break;
                 case 'sphere':
                     const r = options.r;
                     selFunc = ((a, e) => {
