@@ -11,17 +11,26 @@ function MVRange(props) {
     // Range definition
     const min = 'min' in props? props.min : 0;
     const max = 'max' in props? props.max : 100;
+    const defaultValue = 'default' in props? props.default : (min + max) / 2;
     const step = 'step' in props? props.step : 1;
 
     function toNumber(v) {
         v = parseFloat(v);
-        v = Math.min(v, max);
-        v = Math.max(v, min);
-        v = Math.round(v/step)*step;
+        // The slider already constrains to min/max
+        // and steps correctly, so let's allow the user
+        // to enter any value they want here.
+
+        // v = Math.min(v, max);
+        // v = Math.max(v, min);
+        // round to the nearest step
+        // v = Math.round(v / step) * step;
+        
+        // fix rounding errors
+        v = parseFloat(v.toFixed(6));
         return v;
     }
 
-    const in_val = (props.value != null? toNumber(props.value) : min);
+    const in_val = (props.value != null? toNumber(props.value) : defaultValue);
     const id = useId('range');
 
     const [text, setText] = useState(in_val.toString());
