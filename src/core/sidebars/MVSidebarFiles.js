@@ -19,6 +19,8 @@ import MagresViewSidebar from './MagresViewSidebar';
 import MVButton from '../../controls/MVButton';
 import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 import MVIcon from '../../icons/MVIcon';
+import { GiSpinningTop } from 'react-icons/gi';
+
 import MVCheckBox from '../../controls/MVCheckBox';
 
 import { useFilesInterface } from '../store';
@@ -64,7 +66,7 @@ function MVSidebarFiles(props) {
                 <MVCustomSelectOption value='efg' icon={<MVIcon icon='efg' color='var(--efg-color-3)' />}>EFG table</MVCustomSelectOption>
                 <MVCustomSelectOption value='dip' icon={<MVIcon icon='dip' color='var(--dip-color-3)' />}>Dipolar coupling table</MVCustomSelectOption>
                 <MVCustomSelectOption value='isc' icon={<MVIcon icon='jcoup' color='var(--jcoup-color-3)' />}>J coupling table</MVCustomSelectOption>
-                <MVCustomSelectOption value='spinsys' icon={<MVIcon icon='spinsys' color='var(--spinsys-color-3)' />}>SpinSys</MVCustomSelectOption>
+                <MVCustomSelectOption value='spinsys' icon={<GiSpinningTop style={{color: 'var(--spinsys-color-3)'}}/>}>SpinSys</MVCustomSelectOption>
             </MVCustomSelect>
             {/* check-boxes for what to include in spinsys output. Only show if fileint.fileType === 'spinsys' */}
             {fileint.fileType === 'spinsys' ? spinSysOptions(fileint) : null}
