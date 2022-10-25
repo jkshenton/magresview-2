@@ -83,12 +83,15 @@ class EFGInterface extends CScaleInterface {
     reset() {
         // reset the parent class 
         super.reset();
-        // update the efg back to initial state
-        // this.dispatch(efgAction(initialEFGState), 
-        //              [Events.EFG_ELLIPSOIDS,
-        //               Events.EFG_LABELS]);
+
+        // for some reason at least one needs to fire off like this to properly reset the cscale
+        // so this is a bit of a hack. Instead of doing:
+        // this.ellipsoidScale = initialEFGState.efg_ellipsoids_scale;
+        // we do:
+        this.dispatch(efgAction({ 'efg_ellipsoids_scale':  initialEFGState.efg_ellipsoids_scale}, [Events.CSCALE]));
+        
+        // the others can be reset like this
         this.hasEllipsoids = initialEFGState.efg_ellipsoids_on;
-        this.ellipsoidScale = initialEFGState.efg_ellipsoids_scale;
         this.labelsMode = initialEFGState.efg_labels_type;
         this.precision = initialEFGState.efg_precision;
         
