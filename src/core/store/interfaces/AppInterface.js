@@ -30,16 +30,18 @@ import { Events } from '../listeners';
 
 import CrystVis from '@ccp-nc/crystvis-js';
 
+import { themes } from '../../themes';
 
 const initialAppState = {
     app_viewer: null,
     app_click_handler: null,
-    app_theme: 'dark',
+    app_theme_name: 'dark',
+    app_theme: themes.dark,
     app_sidebar: 'load',
     app_default_displayed: null,
     app_model_queued: null,
     app_load_as_mol: null, // crystvis-js will try to figure out what's appropriate...
-    app_use_nmr_isos: true
+    app_use_nmr_isos: true,
 };
 
 // Functions meant to operate on the app alone.
@@ -158,16 +160,29 @@ class AppInterface extends BaseInterface {
         return model_name;
     }
 
-    get theme() {
-        return this.state.app_theme;
+    get themeName() {
+        return this.state.app_theme_name;
     }
 
-    set theme(v) {
+    set themeName(v) {
         this.dispatch({
-            type: 'set',
-            key: 'app_theme',
-            value: v
+            type: 'update',
+            data: {
+                app_theme_name: v,
+                app_theme: themes[v],
+                listen_update: [
+                    Events.DISPLAY, Events.SEL_LABELS, Events.CSCALE,
+                    Events.MS_ELLIPSOIDS, Events.MS_LABELS,
+                    Events.EFG_ELLIPSOIDS, Events.EFG_LABELS,
+                    Events.DIP_LINKS, Events.JC_LINKS
+                ]
+            }
         });
+    }
+
+
+    get theme() {
+        return themes[this.themeName];
     }
 
     get sidebar() {

@@ -7,6 +7,9 @@ function displayListener(state) {
 
     let data = {};
 
+    // Apply theme
+    app.theme = state.app_theme;
+
     if (app && toDisplay) {
         app.displayModel(toDisplay);
         data = {

@@ -76,7 +76,7 @@ function MagresViewPage() {
         setHovered(false);
     }
 
-    return (<div className={chainClasses('mv-main-page', 'theme-' + appint.theme, hovered? 'has-drag' : '' )}
+    return (<div className={chainClasses('mv-main-page', 'theme-' + appint.themeName, hovered? 'has-drag' : '' )}
                  onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} onDragOver={handleDragOver} onDrop={handleDrop}>
                 <MagresViewHeader />
                 <MVSidebarLoad show={appint.sidebar === 'load'} />
