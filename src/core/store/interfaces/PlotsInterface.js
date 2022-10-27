@@ -31,8 +31,8 @@ const initialPlotsState = {
     plots_max_x: 100.0,
     plots_min_y: 0,
     plots_max_y: 5.0,
-    plots_peak_width: 2.0,
-    plots_x_steps: 100,
+    plots_peak_width: 1.0,
+    plots_x_steps: 250,
     plots_data: null,
     plots_show_labels: true,
 };

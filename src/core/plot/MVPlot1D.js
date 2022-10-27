@@ -66,7 +66,7 @@ function MVPlot1D(props) {
         case 'line-1d':
             lineprops = {
                 enablePoints: false,                
-                enableArea: true,  
+                enableArea: false,  
             }
             leftaxis = {
                 legend: 'Intensity',
