@@ -81,7 +81,9 @@ themes.dark.BkgColor3 = themes.dark.DarkColor3;
 themes.dark.FwdColor1 = themes.dark.LightColor1;
 themes.dark.FwdColor2 = themes.dark.LightColor2;
 themes.dark.FwdColor3 = themes.dark.LightColor3;
+themes.dark.sel_sitesColor1 = themes.dark.FwdColor1;
 themes.dark.sel_sitesColor2 = themes.dark.FwdColor2;
+themes.dark.sel_sitesColor3 = themes.dark.FwdColor3;
 
 themes.light.BkgColor1 = themes.light.LightColor1;
 themes.light.BkgColor2 = themes.light.LightColor2;
@@ -89,7 +91,9 @@ themes.light.BkgColor3 = themes.light.LightColor3;
 themes.light.FwdColor1 = themes.light.DarkColor1;
 themes.light.FwdColor2 = themes.light.DarkColor2;
 themes.light.FwdColor3 = themes.light.DarkColor3;
+themes.light.sel_sitesColor1 = themes.light.FwdColor1;
 themes.light.sel_sitesColor2 = themes.light.FwdColor2;
+themes.light.sel_sitesColor3 = themes.light.FwdColor3;
 
 
 // more aliases
