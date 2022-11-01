@@ -268,7 +268,7 @@ class FilesInterface extends BaseInterface {
         const Vzz = getNMRData(view, 'e_z', 'efg')[1];
         const aniso = getNMRData(view, 'aniso', 'efg')[1];
         const asymm = getNMRData(view, 'asymm', 'efg')[1];
-        const Q = getNMRData(view, 'Q', 'efg')[1] / 1e6; // Convert to MHz
+        const Q = getNMRData(view, 'Q', 'efg')[1]; // in MHz already
 
         // Euler angles
         const euler = view.atoms.map((a) => {
@@ -426,6 +426,7 @@ class FilesInterface extends BaseInterface {
         if (options.includeEFG) {
             if (!this.hasEFGData) {
                 console.warn('No EFG data found. Skipping EFG data in spinsys table.');
+                alert('No EFG data found. Skipping EFG data in spinsys table.');
             }
             else {
                 // Get the NMR data
