@@ -19,6 +19,9 @@ function displayListener(state) {
 
         // Center model
         centerDisplayed(app);
+        
+        // fix cell color to match theme
+        app.model.box.color = state.app_theme.FwdColor3;
     }
 
     return data;
