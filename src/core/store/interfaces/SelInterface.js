@@ -327,7 +327,7 @@ class SelInterface extends BaseInterface {
         if (selFunc) {
             handler.setCallback('sel', LC, (a, e) => { intf.selected = selFunc(a, e); });
             handler.setCallback('sel', SLC, (a, e) => { intf.selected = app.selected.or(selFunc(a, e)); });
-            handler.setCallback('sel', CLC, (a, e) => { intf.selected = app.selected.xor(selFunc(a, e)); });
+            handler.setCallback('sel', CLC, (a, e) => { intf.selected = app.selected.remove(selFunc(a, e)); });
         }
         else {
             // Free the events
