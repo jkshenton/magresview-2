@@ -32,3 +32,13 @@ export const tooltip_isotope_select = <div>
 </div>
 
 // --- Magnetic shielding sidebar ---
+
+
+
+// --- Plots sidebar ---
+export const tooltip_lorentzian_broadening = <div>
+    <p>
+        This is the width used for the <a href="https://en.wikipedia.org/wiki/Spectral_line_shape#Lorentzian">Lorentzian broadening function. </a> <br />
+        When the width is set to 0, no broadening is applied and simple sticks are drawn.
+    </p>
+</div>

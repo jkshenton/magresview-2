@@ -38,6 +38,27 @@ function MVPlot1D(props) {
         });
     }
 
+    function getXlims() {
+        let xlims = [pltint.floatRangeX[0], pltint.floatRangeX[1]];
+
+        if (pltint.autoScaleX) {
+            let data = pltint.data[0].peaks;
+            let range = Math.abs(data[data.length - 1] - data[0]);
+            xlims = [data[0] - range * 0.15, data[data.length - 1] + range * 0.15];
+            // xlims = ['auto', 'auto'] // setting it to auto seems to crash it...!?
+        }        
+        return xlims;
+    }
+
+    function getYlims() {
+        let ylims = [pltint.floatRangeY[0], pltint.floatRangeY[1]];
+        // if auto scale is on, let nivo do the work
+        if (pltint.autoScaleY) {
+            ylims = ['auto', 'auto'];
+        }
+        return ylims;
+    }
+
     function imgLayer() {
 
         if (image) {
@@ -62,40 +83,33 @@ function MVPlot1D(props) {
     // y axis properties
     let leftaxis = {}
     // Custom mode-dependent properties
-    switch (pltint.mode) {
-        case 'line-1d':
-            lineprops = {
-                enablePoints: false,                
-                enableArea: false,  
-            }
-            leftaxis = {
-                legend: 'Intensity',
-                legendOffset: -40,
-                legendPosition: 'middle'
-            }
-
-
-            break;
-        case 'bars-1d':
-            lineprops = {
-                pointSymbol: ((p) => {
-                    return (<rect x = {-p.size / 4} width={p.size / 2} height={(height-(state.top+state.bottom)) * 0.75} color={p.borderColor} 
-                                  fill={p.color} strokeWidth={p.borderWidth}></rect>);
-                }),
-                pointLabelYOffset: 0,
-                lineWidth: 0
-            };
-            // y axis properties
-            leftaxis = {
-                // no axis label
-                legend: '',
-                // no ticks
-                tickValues: 0,
-            };
-
-            break;
-        default: 
-            break;
+    if (pltint.peakW > 0) {
+        lineprops = {
+            enablePoints: false,                
+            enableArea: false,  
+        }
+        leftaxis = {
+            legend: 'Intensity',
+            legendOffset: -40,
+            legendPosition: 'middle'
+        }
+    // if it's zero, draw bars
+    } else if (pltint.peakW === 0) {
+        lineprops = {
+            pointSymbol: ((p) => {
+                return (<rect x = {-p.size / 4} width={p.size / 2} height={(height-(state.top+state.bottom)) * 0.5} color={p.borderColor} 
+                              fill={p.color} strokeWidth={p.borderWidth}></rect>);
+            }),
+            pointLabelYOffset: 0,
+            lineWidth: 0
+        };
+        // y axis properties
+        leftaxis = {
+            // no axis label
+            legend: '',
+            // no ticks
+            tickValues: 0,
+        };
     }
     
     // function to return the nearest peak to a give x value
@@ -145,9 +159,8 @@ function MVPlot1D(props) {
         >
             {/* show nearest peak x and label */}
             {renderNearestPeak(getNearestPeak(point.data.x))}
-            {/* show intensity */}
-            <strong>x:</strong> {point.data.xFormatted} <br/>
-            <strong>y:</strong> {point.data.yFormatted}
+            <strong>x:</strong> {point.data.xFormatted}
+            {/* <strong>y:</strong> {point.data.yFormatted} */}
         </div>
     )
 
@@ -220,7 +233,15 @@ function MVPlot1D(props) {
         }
         return [];
     }
-    
+    // what should we label the x axis?
+    // include the element symbol if we have one
+    let xlegend = pltint.element? pltint.element + ' ' : '';
+    // if we're using reference table, then we're plotting chemical shifts
+    if (pltint.useRefTable) {
+        xlegend += 'Chemical shift (ppm)';
+    } else {
+        xlegend += 'Shielding (ppm)';
+    }
 
     // x axis properties
     let bottomaxis = {
@@ -229,7 +250,8 @@ function MVPlot1D(props) {
         tickPadding: 5,
         tickRotation: 0,
         // if pltint.useRefTable is true, then we're plotting chemical shifts
-        legend: pltint.useRefTable ? 'Chemical shift/ppm' : 'Shielding/ppm',
+        // use element symbol in the label
+        legend: xlegend,
         legendOffset: 36,
         legendPosition: 'middle',
     };
@@ -257,14 +279,14 @@ function MVPlot1D(props) {
             margin={state}
             xScale={{
                 type: 'linear',
-                min: pltint.floatRangeX[0],
-                max: pltint.floatRangeX[1],
+                min: getXlims()[0],
+                max: getXlims()[1],
                 reverse: pltint.useRefTable? true : false
             }}
             yScale={{
                 type: 'linear',
-                min: pltint.floatRangeY[0],
-                max: pltint.floatRangeY[1]
+                min: getYlims()[0],
+                max: getYlims()[1],
             }}
             layers={layers}
             axisBottom={bottomaxis}

@@ -17,9 +17,12 @@ import { Events } from '../listeners';
 import { loadImage } from '../../../utils';
 import { makeSelector, DataCheckInterface } from '../utils';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+// lodash
+import _ from 'lodash';
 
 const initialPlotsState = {
     plots_mode: 'none',
+    plots_element: null, // what species' spectrum to plot
     plots_use_refs: false,
     plots_q2_shifts: true,
     plots_show_axes: true,
@@ -27,14 +30,16 @@ const initialPlotsState = {
     plots_bkg_img_url: null,
     plots_bkg_img_w: 0,
     plots_bkg_img_h: 0,
+    plots_auto_x: true, // if this are true, ignore the min/max values
+    plots_auto_y: true, // if this are true, ignore the min/max values
     plots_min_x: 0,
     plots_max_x: 100.0,
     plots_min_y: 0,
     plots_max_y: 5.0,
-    plots_peak_width: 1.0,
-    plots_x_steps: 250,
+    plots_peak_width: 0.5,
+    plots_x_steps: 801,
     plots_data: null,
-    plots_show_labels: true,
+    plots_show_labels: false,
 };
 
 function makePlotAction(data) {
@@ -49,12 +54,43 @@ function makePlotAction(data) {
 
 class PlotsInterface extends DataCheckInterface {
 
+    get hasData() {
+        let app = this.state.app_viewer;
+        return (app && app.model && (app.model.hasArray('ms')));        
+    }
+
     get mode() {
         return this.state.plots_mode;
     }
 
     set mode(v) {
         this.dispatch(makePlotAction({ plots_mode: v }));
+    }
+
+    get elements() {
+        let elements = this.state.app_viewer.selected.elements
+        // if there current selection is empty, use all the elements
+        if (elements.length === 0) {
+            elements = _.uniq(this.state.app_viewer.model.symbols);
+        }
+        return elements;
+    }
+
+    get element() {
+        if (this.hasData) {
+            if (this.state.plots_element === null) {
+                return this.elements[0];
+                }
+            if (!this.elements.includes(this.state.plots_element)) {
+                return this.elements[0];
+            }
+        }
+
+        return this.state.plots_element;
+    }
+
+    set element(v) {
+        this.dispatch(makePlotAction({ plots_element: v }));
     }
 
     get useQ2Shift() {
@@ -121,6 +157,23 @@ class PlotsInterface extends DataCheckInterface {
     set peakW(v) {
         this.dispatch(makePlotAction({ plots_peak_width: v }));
     }
+
+    get autoScaleX() {
+        return this.state.plots_auto_x;
+    }
+
+    set autoScaleX(v) {
+        this.dispatch(makePlotAction({ plots_auto_x: v }));
+    }
+
+    get autoScaleY() {
+        return this.state.plots_auto_y;
+    }
+
+    set autoScaleY(v) {
+        this.dispatch(makePlotAction({ plots_auto_y: v }));
+    }
+
 
     get rangeX() {
         return [this.state.plots_min_x, this.state.plots_max_x];
