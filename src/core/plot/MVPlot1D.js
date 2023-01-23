@@ -18,6 +18,8 @@ function MVPlot1D(props) {
         right: 20,
         bottom: 50
     });
+    // Minimum range for x axis
+    const MIN_X_RANGE = 1; // ppm
 
     const pltint = usePlotsInterface();
 
@@ -44,6 +46,11 @@ function MVPlot1D(props) {
         if (pltint.autoScaleX) {
             let data = pltint.data[0].peaks;
             let range = Math.abs(data[data.length - 1] - data[0]);
+            // make sure the range is not too small
+            if (range < MIN_X_RANGE) {
+                range = MIN_X_RANGE;
+            }
+
             xlims = [data[0] - range * 0.15, data[data.length - 1] + range * 0.15];
             // xlims = ['auto', 'auto'] // setting it to auto seems to crash it...!?
         }        
