@@ -38,6 +38,36 @@ export const tooltip_isotope_select = <div>
     You can easily see what isotopes have been set by setting the "Label by" dropdown to "Isotope".
 </div>
 
+// label by
+export const tooltip_label_by = <div>
+    Label selected sites by chosen property. <br /><br />
+    If crystallographic labels were not present in the file these will be generated automatically, with indices matching the order of the file.
+    {/* TODO: add link explaining best practice. */}
+</div>
+
+// selection mode
+export const tooltip_selection_mode = <div>
+    <p>
+        Selection mode: <br />
+        <b>Atom:</b> select individual atoms. <br />
+        <b>Element:</b> select by element <br />
+        <b>Crystallographic label</b> select by crystallographic label <br />
+        <b>Sphere:</b> select atoms within a sphere of a given radius. <br />
+        <b>Molecule:</b> select all atoms in a molecule. <br />
+        <b>Bonds:</b> select atoms within a given number of bonds. <br />
+    </p>
+
+</div>
+
+// isotope selection
+export const tooltip_isotopes = <div>
+    <p>
+        To change an isotope, select a group of atoms all having the same element then choose an isotope from the dropdown. <br />
+        You can display isotope labels using the Label by dropdown above. <br />
+        The isotope information is taken from this file: <a href="https://github.com/CCP-NC/crystvis-js/blob/master/lib/nmrdata.js" target="_blank" rel="noopener noreferrer">nmrdata.js</a>
+    </p>
+</div>
+
 // --- Magnetic shielding sidebar ---
 
 
