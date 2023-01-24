@@ -22,6 +22,13 @@ export const tooltip_nmr_active = <div>
     </p>
 </div>;
 
+export const tooltip_vdw_scaling = <div>
+    <p> MagresView calculates atom connectivity using the van der Waals radii of atoms. You can scale these radii to change add or remove bonds. <br />
+    </p>
+    <p>
+        This is only done when loading or reloading a structure. Click the reload icon next to an existing structure to apply any changes to the vdW scale.  <br />
+    </p>
+</div>;
 
 //  --- Select and display sidebar ---
 // isotope selection
