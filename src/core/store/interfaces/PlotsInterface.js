@@ -155,6 +155,15 @@ class PlotsInterface extends DataCheckInterface {
     }
 
     set peakW(v) {
+        if (isNaN(v)) {
+            v = 0.0;
+            alert('Peak width must be a number. Setting to 0.');
+        }
+        v = parseFloat(v);
+        if (v < 0.0) {
+            v = -1.0*v;
+            alert('Peak width cannot be negative. Setting to absolute value.');
+        }
         this.dispatch(makePlotAction({ plots_peak_width: v }));
     }
 
