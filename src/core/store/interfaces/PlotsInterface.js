@@ -54,6 +54,10 @@ function makePlotAction(data) {
 
 class PlotsInterface extends DataCheckInterface {
 
+    get app() {
+        return this.state.app_viewer;
+    }
+
     get hasData() {
         let app = this.state.app_viewer;
         return (app && app.model && (app.model.hasArray('ms')));        
@@ -76,16 +80,22 @@ class PlotsInterface extends DataCheckInterface {
         return elements;
     }
 
-    get element() {
+    setDefaultElement() {
         if (this.hasData) {
             if (this.state.plots_element === null) {
-                return this.elements[0];
-                }
+                // set the default element to the first one
+                this.element = this.elements[0];
+                
+            }
             if (!this.elements.includes(this.state.plots_element)) {
-                return this.elements[0];
+                // the currently chosen element is not in the current selection anymore
+                // set the default element to the first one
+                this.element = this.elements[0];
             }
         }
+    }
 
+    get element() {
         return this.state.plots_element;
     }
 

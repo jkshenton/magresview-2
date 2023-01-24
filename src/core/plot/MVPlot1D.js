@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { Line } from '@nivo/line'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import MVModal from '../../controls/MVModal';
 import { usePlotsInterface } from '../store';
@@ -85,6 +85,13 @@ function MVPlot1D(props) {
         layers = _.without(layers, 'axes');
 
     const show = (pltint.mode !== 'none');
+
+    // set the default element to the first one in the list
+    useEffect(() => {
+        if (show) {
+            pltint.setDefaultElement();
+        }
+    }, [show, pltint]);
 
     let lineprops = {};
     // y axis properties

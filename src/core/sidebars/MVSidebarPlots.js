@@ -24,8 +24,8 @@ import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSel
 import MVRange from '../../controls/MVRange';
 import MVSwitch from '../../controls/MVSwitch';
 import MVTooltip from '../../controls/MVTooltip';
-
-import { tooltip_lorentzian_broadening } from './tooltip_messages';
+import { tooltip_lorentzian_broadening, tooltip_plots_shifts, tooltip_plots_elements } from './tooltip_messages';
+import React, { useEffect, useRef} from 'react';
 
 
 
@@ -56,6 +56,17 @@ function MVSidebarPlots(props) {
         has_ms = pltint.hasData;
     }
 
+    const pltRef = useRef();
+    pltRef.current = pltint;
+
+    useEffect(() => {
+        console.log('Swithing on plotd');
+        if (!props.show) return;
+
+        let pltint = pltRef.current;
+        pltint.mode = 'line1d';
+    }, [props.show, pltint.app]); // The dependency on app guarantees this is executed AFTER the app itself is loaded
+
     // get options for the dropdown menu with elements
     const elements = has_ms? pltint.elements : [];
     const options = elements.map((el, i) => {
@@ -64,20 +75,28 @@ function MVSidebarPlots(props) {
 
     return (<MagresViewSidebar show={props.show} title="Spectral plots">
         <div className={chainClasses('mv-sidebar-block', has_ms? '' : 'hidden')}>
-            <div className='mv-euler-agrid-switch'>
+            <div className='mv-plots-agrid-switch'>
                 <span>Off</span>
                 <MVSwitch on={ pltint.mode === 'line1d' } onClick={() => { pltint.mode = otherOnOff[pltint.mode]; }} 
-                            colorFalse='var(--ms-color-2)' colorTrue='var(--efg-color-2)'/>
+                            colorFalse='var(--bkg-color-1)' colorTrue='var(--ms-color-2)'/>
                 <span>On</span>
             </div>
-            <div className='mv-sidebar-block'>
-            <MVCustomSelect onSelect={(v) => { pltint.element = v; }} selected={pltint.element} name='element_dropdown'>
-                {options}
-            </MVCustomSelect>
+            <span className='sep-1' />
+            <div className='mv-sidebar-tooltip-grid'>
+                Element <MVTooltip tooltipText={tooltip_plots_elements} />
+                <MVCustomSelect onSelect={(v) => { pltint.element = v; }} selected={pltint.element} name='element_dropdown'>
+                    {options}
+                </MVCustomSelect>
             </div>
-            <div className='mv-sidebar-block'>
-                <MVCheckBox checked={pltint.useRefTable} onCheck={(v) => { pltint.useRefTable = v; }}>Show chemical shifts (use references)</MVCheckBox>
+            <span className='sep-1' />
+            <div className='mv-plots-agrid-switch'>
+                <span>Shielding</span>
+                <MVSwitch on={ pltint.useRefTable} onClick={() => { pltint.useRefTable = !pltint.useRefTable; }} 
+                            colorFalse='var(--bkg-color-1)' colorTrue='var(--ms-color-2)'/>
+                <span>Shift (use references)</span>
+                <MVTooltip tooltipText={tooltip_plots_shifts} />
             </div>
+            <span className='sep-1' />
             {/* <div className='mv-sidebar-block'>
                 Background spectrum image
                 <MVFile filetypes={formats} onSelect={(f) => { pltint.loadBkgImage(f); }} notext={false} multiple={false}/>
@@ -86,8 +105,6 @@ function MVSidebarPlots(props) {
             <div className='mv-sidebar-grid'>
                 <MVCheckBox checked={pltint.showAxes} onCheck={(v) => { pltint.showAxes = v; }}>Show axes</MVCheckBox>
                 <MVCheckBox checked={pltint.showGrid} onCheck={(v) => { pltint.showGrid = v; }}>Show grid</MVCheckBox>
-            </div>
-            <div className='mv-sidebar-grid'>
                 <MVCheckBox checked={pltint.showLabels} onCheck={(v) => { pltint.showLabels = v; }}>Show labels</MVCheckBox>
             </div>
             <span className='sep-1' />

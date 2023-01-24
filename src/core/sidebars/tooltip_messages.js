@@ -38,7 +38,22 @@ export const tooltip_isotope_select = <div>
 // --- Plots sidebar ---
 export const tooltip_lorentzian_broadening = <div>
     <p>
-        This is the width used for the <a href="https://en.wikipedia.org/wiki/Spectral_line_shape#Lorentzian">Lorentzian broadening function. </a> <br />
+        This is the width used for the <a href="https://en.wikipedia.org/wiki/Spectral_line_shape#Lorentzian" target="_blank" rel="noopener noreferrer">Lorentzian broadening function. </a> <br />
         When the width is set to 0, no broadening is applied and simple sticks are drawn.
+    </p>
+</div>
+
+export const tooltip_plots_shifts = <div>
+    <p>
+        If you have set a reference value for the selected element, you can choose to display chemical shift information, rather than the computed chemical shielding. <br />
+        If no reference value is set, this option will be disabled. <br />
+        You can set a reference value by clicking the <b>Set References</b> button in the <b>Magnetic Shielding</b> tab. <br />
+    </p>
+</div>
+
+export const tooltip_plots_elements = <div>
+    <p>
+        Choose which speicies to plot from the set of <i> currently selected </i> elements. <br />
+        To change the selection, use the <b>Select and display</b> tab. <br />
     </p>
 </div>

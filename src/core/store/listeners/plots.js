@@ -38,6 +38,16 @@ function plotsListener(state) {
     const n = parseInt(state.plots_x_steps);
     const peaks = getNMRData(view, nmr_mode, 'ms', ref_table)[1];
     const NWIDTHS = 5;
+
+    // make sure no null values in peaks
+    if (peaks.indexOf(null) >= 0) {
+        // cannot plot peaks if there are null values
+        // probably because there is no MS reference
+        alert('Check that you have set the MS reference ' +
+        'for the selected element.\n\n ' +
+        'Alternatively, switch to plotting the ' +
+        'raw chemical sheilding instead.');
+    }
     
     // if auto_x is true, use the range of peaks
     if (state.plots_auto_x) {
