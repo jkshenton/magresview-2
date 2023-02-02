@@ -26,7 +26,7 @@ import MVCheckBox from '../../controls/MVCheckBox';
 import { useFilesInterface } from '../store';
 import { saveContents } from '../../utils';
 
-const saveFile = (c, fn) => { saveContents('data:,' + c, fn); }
+const saveFile = (c, fn) => { saveContents(c, fn); }
 
 function selectquadorder(fileint) {
     return (<div className='.mv-sidebar-grid'>
