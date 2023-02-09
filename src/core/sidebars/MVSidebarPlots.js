@@ -51,7 +51,7 @@ function MVSidebarPlots(props) {
         pltint.setRange(null, v);
     }
 
-    var has_ms = false;
+    let has_ms = false;
     if (props.show) {
         has_ms = pltint.hasData;
     }
@@ -60,11 +60,12 @@ function MVSidebarPlots(props) {
     pltRef.current = pltint;
 
     useEffect(() => {
-        console.log('Swithing on plotd');
         if (!props.show) return;
 
         let pltint = pltRef.current;
-        pltint.mode = 'line1d';
+        if (pltint.hasData) {
+            pltint.mode = 'line1d';
+        }
     }, [props.show, pltint.app]); // The dependency on app guarantees this is executed AFTER the app itself is loaded
 
     // get options for the dropdown menu with elements

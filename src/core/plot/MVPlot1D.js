@@ -84,8 +84,7 @@ function MVPlot1D(props) {
     if (!pltint.showAxes)
         layers = _.without(layers, 'axes');
 
-    const show = (pltint.mode !== 'none');
-
+    const show = (pltint.mode !== 'none') && (pltint.hasData);
     // set the default element to the first one in the list
     useEffect(() => {
         if (show) {
