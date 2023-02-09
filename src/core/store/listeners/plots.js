@@ -7,6 +7,12 @@ function plotsListener(state) {
     // later we might override this with the range of peaks
     let minx = parseFloat(state.plots_min_x);
     let maxx = parseFloat(state.plots_max_x);
+    // make sure minx < maxx
+    if (minx > maxx) {
+        let tmp = minx;
+        minx = maxx;
+        maxx = tmp;
+    }
 
     // Get target atom view
     const app = state.app_viewer;

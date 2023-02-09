@@ -205,6 +205,13 @@ class PlotsInterface extends DataCheckInterface {
         xmin = isNaN(xmin)? 0.0 : xmin;
         xmax = isNaN(xmax)? xmin+100.0 : xmax;
 
+        // make sure xmin < xmax
+        if (xmin > xmax) {
+            let tmp = xmin;
+            xmin = xmax;
+            xmax = tmp;
+        }
+
         return [xmin, xmax];
     }
 
