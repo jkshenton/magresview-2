@@ -66,6 +66,7 @@
   display: grid;
   align-items: center;
   grid-template-columns: 30px auto;
+  position: relative;
 }
 
 .mv-cselect-opt:hover {
