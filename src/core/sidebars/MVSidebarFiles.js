@@ -37,6 +37,9 @@ const mergeOption = (fileint) => {
             <MVTooltip tooltipText={tooltip_files_merge} />
             </MVCheckBox>);
     } else {
+        // force the mergeByLabel to be false
+        // if there are no CIF labels
+        fileint.mergeByLabel = false;
         // blank return
         return (<></>);
     }
@@ -51,6 +54,7 @@ function selectFileFormat(fileint) {
         <MVCustomSelect title={'File type'} zorder={3} selected={fileint.fileFormat} onSelect={(v) => { fileint.fileFormat = v; }}>
             <MVCustomSelectOption value={'fixed'}>Fixed width</MVCustomSelectOption>
             <MVCustomSelectOption value={'csv'}>CSV</MVCustomSelectOption>
+            <MVCustomSelectOption value={'tsv'}>Tab separated</MVCustomSelectOption>
         </MVCustomSelect>
     </div>);
 }
