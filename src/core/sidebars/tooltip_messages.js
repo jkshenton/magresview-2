@@ -90,7 +90,31 @@ export const tooltip_plots_shifts = <div>
 
 export const tooltip_plots_elements = <div>
     <p>
-        Choose which speicies to plot from the set of <i> currently selected </i> elements. <br />
+        Choose which species to plot from the set of <i> currently selected </i> elements. <br />
         To change the selection, use the <b>Select and display</b> tab. <br />
+    </p>
+</div>
+
+
+// --- Report files sidebar ---
+export const tooltip_files_merge = <div>
+    <p>
+        If checked, sites with the same crystallographic label will 
+        be merged into one entry in the output file. 
+    </p>
+    {/* <p>
+        If no crystallographic labels were present in the loaded file, 
+        then they will have been generated automatically based on the site index, 
+        so this option won't do anything.
+    </p> */}
+    <p>
+        The multiplicity of each label is given in the output file.
+        Note: This checks for multiplicity within the current selection only. 
+    </p>
+</div>
+
+export const tooltip_files_precision = <div>
+    <p>
+        The number of decimal places to use in the output file.
     </p>
 </div>
