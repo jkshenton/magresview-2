@@ -2,6 +2,15 @@ import _ from 'lodash';
 import { getSel, getNMRData } from '../utils';
 
 function plotsListener(state) {
+
+    // If plot is off, return empty data
+    // (no need to waste time computing)
+    if (state.plots_mode === 'none') {
+        return {
+            plots_data: []
+        };
+    }
+
     // Get axes ranges
     // use the range specified by the user/defaults
     // later we might override this with the range of peaks
