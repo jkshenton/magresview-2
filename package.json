@@ -30,7 +30,6 @@
     "react-popper": "^2.3.0",
     "react-popper-tooltip": "^4.4.2",
     "react-redux": "^9.1.0",
-    "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "tinykeys": "^1.4.0"
   },
