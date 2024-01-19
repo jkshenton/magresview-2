@@ -2,11 +2,11 @@ import './MVIcon.css';
 
 import React from 'react';
 
-import { ReactComponent as MSIcon } from './ms.svg';
-import { ReactComponent as EFGIcon } from './efg.svg';
-import { ReactComponent as DipIcon } from './dip.svg';
-import { ReactComponent as JcoupIcon } from './jcoup.svg';
-import { ReactComponent as EulerIcon } from './euler.svg';
+import MSIcon from './ms.svg?react';
+import EFGIcon from './efg.svg?react';
+import DipIcon from './dip.svg?react';
+import JcoupIcon from './jcoup.svg?react';
+import EulerIcon from './euler.svg?react';
 
 const icons = {
     ms: MSIcon,
