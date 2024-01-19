@@ -73,8 +73,8 @@ class PlotsInterface extends DataCheckInterface {
 
     get elements() {
         let elements = this.state.app_viewer.selected.elements
-        // if there current selection is empty, use all the elements
-        if (elements.length === 0) {
+        // if there current selection is empty (i.e. if not elements ), use all the elements
+        if (!elements) {
             elements = _.uniq(this.state.app_viewer.model.symbols);
         }
         return elements;

@@ -8,6 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import magresStore from './core/store';
 
+// TODO: migrate to the new createRoot API
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={magresStore}>
