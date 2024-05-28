@@ -27,15 +27,22 @@ const initialEulerState = {
     eul_atom_A: null,
     eul_newatom_A: null,
     eul_tensor_A: 'ms',
+    eul_tensor_order_A: 'increasing',
     eul_atom_B: null,
     eul_newatom_B: null,
-    eul_tensor_B: 'ms',
+    eul_tensor_B: 'efg',
+    eul_tensor_order_B: 'increasing',
     eul_convention: 'zyz',
-    eul_results: null
+    eul_results: null,
+    eul_tensor_A_values: null,
+    eul_tensor_B_values: null,
+    eul_show_table: false,
+    eul_equivalent_angle_config: [0,0],
 };
 
-const tensorValues = new Set(['ms', 'efg']);
+const tensorValues = new Set(['ms', 'efg', 'dipolarAB', 'jcouplingAB', 'crystal']);
 const conventionValues = new Set(['zyz', 'zxz']);
+const tensorOrderValues = new Set(['haeberlen', 'nqr', 'increasing', 'decreasing']);
 
 function makeCallback(dispatch, ending='A') {    
 
@@ -79,6 +86,49 @@ class EulerInterface extends DataCheckInterface {
         return (app && app.model && (app.model.hasArray('efg')));            
     }
 
+    get hasJData() {
+        let app = this.state.app_viewer;
+        return (app && app.model && (app.model.hasArray('isc')));
+    }
+
+    get allowedTensorTypes() {
+        let types = new Set();
+
+        if (this.hasMSData)
+            types.add('ms');
+        if (this.hasEFGData)
+            types.add('efg');
+        if (this.hasJData)
+            types.add('jcouplingAB');
+        // can always use dipolar
+        types.add('dipolarAB');
+        // can always use crystal
+        types.add('crystal');
+        // return as array
+        return Array.from(types);
+    }
+
+    get orderA() {
+        return this.state.eul_tensor_order_A;
+    }
+
+    set orderA(v) {
+        if (!tensorOrderValues.has(v))
+            throw Error('Invalid tensor order for Euler angles');
+        this.dispatch(makeEulerAction({eul_tensor_order_A: v}));
+    }
+
+    get orderB() {
+        return this.state.eul_tensor_order_B;
+    }
+
+    set orderB(v) {
+        if (!tensorOrderValues.has(v))
+            throw Error('Invalid tensor order for Euler angles');
+        this.dispatch(makeEulerAction({eul_tensor_order_B: v}));
+    }
+
+
     get convention() {
         return this.state.eul_convention;
     }
@@ -88,6 +138,29 @@ class EulerInterface extends DataCheckInterface {
             throw Error('Invalid Euler angles convention');
         this.dispatch(makeEulerAction({eul_convention: v}));
     }
+
+    get equivalentAngleConfig() {
+        return this.state.eul_equivalent_angle_config;
+    }
+
+    set equivalentAngleConfig(v) {
+        this.dispatch(makeEulerAction({eul_equivalent_angle_config: v}));
+    }
+
+    cycleEquivalentAngleConfig() {
+        let [first, second] = this.state.eul_equivalent_angle_config;
+        if (second < 3) {
+          second++;
+        } else {
+          second = 0;
+          if (first < 3) {
+            first++;
+          } else {
+            first = 0;
+          }
+        }
+        this.dispatch(makeEulerAction({eul_equivalent_angle_config: [first, second]}));
+      }
 
     _getAtomLabel(ending='A') {
         let a = this.state['eul_atom_' + ending];
@@ -135,6 +208,41 @@ class EulerInterface extends DataCheckInterface {
         this._setTensorType(v, 'B');        
     }
 
+    get showTable() {
+        return this.state.eul_show_table;
+    }
+
+    set showTable(v) {
+        this.dispatch(makeEulerAction({eul_show_table: v}));
+    }
+
+    swapAtoms() {
+        let a = this.state.eul_atom_A;
+        let b = this.state.eul_atom_B;
+        let ta = this.state.eul_tensor_A;
+        let tb = this.state.eul_tensor_B;
+        let toa = this.state.eul_tensor_order_A;
+        let tob = this.state.eul_tensor_order_B;
+        // swap tensors
+        this.dispatch(makeEulerAction({
+            eul_atom_A: null,
+            eul_atom_B: null,
+            // eul_tensor_A: tb,
+            // eul_tensor_B: ta,
+            eul_tensor_order_A: tob,
+            eul_tensor_order_B: toa,
+        }));
+        this.tensorA = tb;
+        this.tensorB = ta;
+        // swap atoms
+        // (has to be as a separate step)
+        this.dispatch(makeEulerAction({
+            eul_newatom_A: b,
+            eul_newatom_B: a
+        }));
+    }
+
+
     _getResult(i, rad=false) {
         let f = rad? 1.0 : 180/Math.PI;
         let r = this.state.eul_results;
@@ -165,6 +273,15 @@ class EulerInterface extends DataCheckInterface {
         return this._getResult(2, true);
     }
 
+    get tensorAValues() {
+        return this.state.eul_tensor_A_values;
+    }
+
+    get tensorBValues() {
+        return this.state.eul_tensor_B_values;
+    }
+
+
     bind() {
         const dispatch = this._dispatcher;
         const handler = this.state.app_click_handler;
@@ -187,7 +304,8 @@ class EulerInterface extends DataCheckInterface {
 
         this.dispatch(makeEulerAction({
             eul_newatom_A: null,
-            eul_newatom_B: null
+            eul_newatom_B: null,
+            eul_show_table: false
         }));
     }
 
@@ -200,7 +318,7 @@ class EulerInterface extends DataCheckInterface {
         report += `Convention: ${this.convention.toUpperCase()}\n\n`;
 
         report += `Degrees:\n${this.alpha}    ${this.beta}    ${this.gamma}\n\n`;
-        report += `Radiants:\n${this.alphaRad}     ${this.betaRad}     ${this.gammaRad}`;
+        report += `Radians:\n${this.alphaRad}     ${this.betaRad}     ${this.gammaRad}`;
 
         return report;
     }

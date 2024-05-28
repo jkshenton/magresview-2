@@ -84,6 +84,7 @@
     justify-content: center;
     max-height: 70vh;
     overflow-y: auto;
+    grid-template-columns: 1fr;
 }
 
 .mv-modal-resizable .mv-modal-content {

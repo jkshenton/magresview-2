@@ -11,7 +11,7 @@ function MVCustomSelectOption(props) {
     const onClick = props.onClick || (() => {});
 
     return (
-        <div className='mv-control mv-cselect-opt' onClick={onClick}>
+        <div className={chainClasses('mv-control', 'mv-cselect-opt', 'mv-cselect-2')} onClick={onClick}>
             {props.icon? props.icon : <span></span>}
             {props.children}
         </div>
@@ -46,7 +46,7 @@ function MVCustomSelect(props) {
         <div style={tstyle} className={chainClasses('mv-control', 'mv-cselect', zorder_class, show? null : 'mv-cselect-closed', 
                                                     props.disabled? 'mv-cselect-disabled' : null )} 
             onMouseLeave={(e) => { setShow(false); }} title={props.title}>
-            <div className='mv-control mv-cselect-main' onClick={() => { setShow(true && (!props.disabled)); }}>
+            <div className={chainClasses('mv-control', 'mv-cselect-main', 'mv-cselect-2')} onClick={() => { setShow(true && (!props.disabled)); }}>
                 {options[selected]}
                 <span className='mv-cselect-main-caret'><FaCaretDown /></span>
             </div>
