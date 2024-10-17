@@ -30,10 +30,12 @@ import React, { useState } from 'react';
 
 import _ from 'lodash';
 import { tooltip_molecular_crystal, tooltip_nmr_active, tooltip_vdw_scaling } from './tooltip_messages';
+import { exampleFiles } from '../../data/exampleMagres';
 import MVRange from '../../controls/MVRange';
-
+import MVButton from '../../controls/MVButton';
 // Accepted file formats
 const file_formats = ['.cif', '.xyz', '.magres', '.cell'];
+const exampleFileNames = Object.keys(exampleFiles);
 
 function MVSidebarLoad(props) {
 
@@ -90,9 +92,35 @@ function MVSidebarLoad(props) {
         </MVListSelectOption>);
     }
 
+    const loadExampleFile = (selectedExample) => {
+        if (selectedExample) {
+            const filePath = `/example_magres/${exampleFiles[selectedExample]}`;
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    const file = new File([data], exampleFiles[selectedExample], { type: 'text/plain' });
+                    loadModel([file]);
+                })
+                .catch(error => console.error('Error loading file:', error));
+        }
+    };
+
     return (<MagresViewSidebar show={props.show} title='Load file'>
         <div className='mv-sidebar-block'>
+            <div>Load one of your files</div>
             <MVFile filetypes={file_formats.join(',')} onSelect={loadModel} notext={true} multiple={true}/>
+            <span className='sep-1' />
+            <div>Or choose from an example file</div>
+            <div className='mv-sidebar-row'>
+                <MVCustomSelect onSelect={(v) => { appint.exampleSelected = v; }} selected={appint.exampleSelected} name='example_dropdown' zorder="2">
+                    {exampleFileNames.map((n) => {
+                        return <MVCustomSelectOption key={n} value={n}>{n}</MVCustomSelectOption>
+                    })}
+                </MVCustomSelect>
+                <MVButton onClick={() => { loadExampleFile(appint.exampleSelected); }} disabled={!appint.exampleSelected}>
+                    Load Example
+                </MVButton>
+            </div>
             <span className='sep-1' />
             <div className='mv-sidebar-block'>
                 <div className='mv-sidebar-tooltip-grid'>
