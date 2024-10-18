@@ -198,6 +198,7 @@ function eulerAngleListener(state) {
         eul_atom_A: a2A,
         eul_atom_B: a2B,
         eul_results: results,
+        eul_equivalent_angles: all_equivalent_eulers,
         eul_tensor_A_values: nmrA,
         eul_tensor_B_values: nmrB,
     };

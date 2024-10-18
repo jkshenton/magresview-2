@@ -34,9 +34,11 @@ const initialEulerState = {
     eul_tensor_order_B: 'increasing',
     eul_convention: 'zyz',
     eul_results: null,
+    eul_equivalent_angles: null,
     eul_tensor_A_values: null,
     eul_tensor_B_values: null,
     eul_show_table: false,
+    eul_show_all_angles: false,
     eul_equivalent_angle_config: [0,0],
 };
 
@@ -216,6 +218,15 @@ class EulerInterface extends DataCheckInterface {
         this.dispatch(makeEulerAction({eul_show_table: v}));
     }
 
+    get showAllAngles() {
+        return this.state.eul_show_all_angles;
+    }
+
+    set showAllAngles(v) {
+        this.dispatch(makeEulerAction({eul_show_all_angles: v}));
+    }
+
+
     swapAtoms() {
         let a = this.state.eul_atom_A;
         let b = this.state.eul_atom_B;
@@ -247,6 +258,10 @@ class EulerInterface extends DataCheckInterface {
         let f = rad? 1.0 : 180/Math.PI;
         let r = this.state.eul_results;
         return r? (r[i]*f) : 'N/A';        
+    }
+
+    get equivalentAngles() {
+        return this.state.eul_equivalent_angles;
     }
 
     get alpha() {
@@ -338,7 +353,9 @@ class EulerInterface extends DataCheckInterface {
             return [a.crystLabel, a.getArrayValue('ms'), a.getArrayValue('efg')];
         });
 
-        let table = `Euler angles between MS and EFG tensors in radiants, convention: ${this.convention.toUpperCase()}\n`;
+        let table = `# Euler angles between MS and EFG tensors in radians, convention: ${this.convention.toUpperCase()}\n`;
+        table += 
+        table += `# Atom    alpha    beta    gamma\n`;
         let conv = this.convention;
 
         data.forEach((d, i) => {
@@ -346,7 +363,8 @@ class EulerInterface extends DataCheckInterface {
             let [label, ms, efg] = d;
 
 
-            let [alpha, beta, gamma] = eulerBetweenTensors(ms, efg, conv);
+            // let [alpha, beta, gamma] = eulerBetweenTensors(ms, efg, conv);
+            let [alpha, beta, gamma] = ms.eulerTo(efg, conv);
 
             table += `${label}    ${alpha}    ${beta}    ${gamma}\n`;
         });

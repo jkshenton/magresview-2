@@ -27,7 +27,7 @@ import MVIcon from '../../icons/MVIcon';
 import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
 import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 import MVModal from '../../controls/MVModal';
-import {EigenTable, TensorTable} from '../../controls/MVTensorTable';
+import {EigenTable, TensorTable, AngleTable} from '../../controls/MVTensorTable';
 import { FaCopy } from 'react-icons/fa';
 import { IoMdSwap } from 'react-icons/io';
 import * as mjs from 'mathjs';
@@ -96,6 +96,56 @@ function MVTensorOptions(props) {
     </div>);
 }
 
+/**Modal to display a table of all 16 equivalent Euler angle sets
+ * for the chosen tensors and conventions.
+ */
+function MVEulerEquivalentAngleTableModal(props) {
+    const eulint = useEulerInterface();
+    // get angle values
+    const all_angles = eulint.equivalentAngles;
+
+    const title = `Equivalent ${eulint.convention.toUpperCase()} Euler Angles`;
+
+    // String to display above the table:
+    let descriptionA = '';
+    let descriptionB = '';
+    if (eulint.tensorA === "crystal") {
+        descriptionA += `Crystal axes →`
+    }
+    else if (eulint.tensorA === "dipolarAB") {
+        // TODO double-check
+        descriptionA += `Dipolar (${eulint.atomLabelA}→${eulint.atomLabelB}) tensor (${eulint.orderB} order) →`
+
+    }
+    else {
+        descriptionA += `${eulint.atomLabelA} ${eulint.tensorA.toUpperCase()} tensor (${eulint.orderA} order) →`
+    }
+
+    if (eulint.tensorB === "crystal") {
+        descriptionB += `Crystal axes`
+    }
+    else if (eulint.tensorB === "dipolarAB") {
+        descriptionB += `Dipolar (${eulint.atomLabelA}→${eulint.atomLabelB}) tensor (${eulint.orderB} order)`
+    }
+    else {
+        descriptionB += `${eulint.atomLabelB} ${eulint.tensorB.toUpperCase()} tensor (${eulint.orderB} order)`
+    }
+    
+    const description = `${descriptionA} ${descriptionB}`;
+
+    return (
+        <MVModal title={title} display={props.display} hasOverlay={false}
+                 onClose={props.close} draggable={true} noFooter={true} resizable={true}>
+                <AngleTable 
+                    angles={all_angles} 
+                    description={description}
+                    />
+        </MVModal>
+    );
+}
+
+
+
 
 /**
  * Modal to display the two tensors principal axes
@@ -124,8 +174,6 @@ function MVEulerTensorTableModal(props) {
         tensorB.convention = orderB;
     }
 
-
-    
     // get eigenvectors if tensorA and tensorB are not null
     // Note that sorted_eigenvectors() returns a 3x3 matrix in which the columns are the eigenvectors
     // so we need to transpose it to get the rows
@@ -138,7 +186,6 @@ function MVEulerTensorTableModal(props) {
     let R = null;
     if (tensorA && tensorB) {
         R = tensorA.rotationTo(tensorB);
-        console.log(R);
     }
 
 
@@ -255,6 +302,10 @@ function MVSidebarEuler(props) {
         <div className='mv-sidebar-block'>
             <MVButton onClick={() => { eulint.showTable = true; }} disabled={!hasEither}>Show principal axis systems</MVButton>
             <MVEulerTensorTableModal display={eulint.showTable} close={() => { eulint.showTable = false; }} />
+        </div>
+        <div className='mv-sidebar-block'>
+            <MVButton onClick={() => { eulint.showAllAngles = true; }} disabled={!hasSel}>Show equivalent Euler angles</MVButton>
+            <MVEulerEquivalentAngleTableModal display={eulint.showAllAngles} close={() => { eulint.showAllAngles = false; }} />
         </div>
         <div className='mv-sidebar-block'>
             <MVButton onClick={() => { saveContents('data:,' + eulint.txtSelfAngleTable(), 'eulerTable.txt'); }}  disabled={!(eulint.hasMSData && eulint.hasEFGData)}>
