@@ -42,7 +42,7 @@ const tensorIcons = {
     'ms': <MVIcon icon="ms" color='var(--ms-color-3)' />,
     'efg': <MVIcon icon="efg" color='var(--efg-color-3)' />,
     'dipolarAB': <MVIcon icon="dip" color='var(--dip-color-3)' />,
-    'jcoupling': <MVIcon icon="jcoup" color='var(--jcoup-color-3)' />,
+    'jcouplingAB': <MVIcon icon="jcoup" color='var(--jcoup-color-3)' />,
     'crystal': <MVIcon icon="crystal" color='var(--crystal-color-3)' />
 }
 
@@ -50,7 +50,7 @@ const tensor_labels = {
     'ms': 'MS',
     'efg': 'EFG',
     'dipolarAB': 'Dipolar A→B',
-    'jcoupling': 'J-coupling',
+    'jcouplingAB': 'J-coupling',
     'crystal': 'Crystal axes'
 }
 

@@ -73,15 +73,15 @@ function dipolarTensor(a1, a2) {
 }
 
 /**
- * J coupling constant in Hz between two atoms. Will return
+ * J coupling tensor in Hz between two atoms. Will return
  * a value only if the ISC tensor data is available
  * 
  * @param  {AtomImage} a1   First atom
  * @param  {AtomImage} a2   Second atom
  * 
- * @return {Number}         J-coupling constant in Hz
+ * @return {Array}          3x3 J-coupling tensor in Hz
  */
-function jCoupling(a1, a2) {
+function jCouplingTensor(a1, a2) {
 
     let T;
     // Is it present at all?
@@ -101,7 +101,21 @@ function jCoupling(a1, a2) {
     let g2 = a2.isotopeData.gamma;
     T = T.iscAtomicToHz(g1, g2);
 
+    return T
+}
+
+/**
+ * J coupling constant in Hz between two atoms. Will return
+ * a value only if the ISC tensor data is available
+ * 
+ * @param  {AtomImage} a1   First atom
+ * @param  {AtomImage} a2   Second atom
+ * 
+ * @return {Number}         J-coupling constant in Hz
+ */
+function jCoupling(a1, a2) {
+    let T = jCouplingTensor(a1, a2);
     return T.isotropy;
 }
 
-export { dipolarCoupling, dipolarTensor, jCoupling };
+export { dipolarCoupling, dipolarTensor, jCoupling, jCouplingTensor };

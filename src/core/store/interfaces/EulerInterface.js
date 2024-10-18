@@ -14,7 +14,6 @@
 
 import { Events } from '../listeners';
 import { makeSelector, DataCheckInterface } from '../utils';
-import { eulerBetweenTensors } from '../../../utils';
 
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 

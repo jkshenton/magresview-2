@@ -4,7 +4,7 @@
 
 import { msColor, efgColor, dipColor, jcColor } from './colors';
 import { eulerBetweenTensors } from '../../../utils';
-import { dipolarTensor, jCoupling } from '../../../utils';
+import { dipolarTensor, jCouplingTensor } from '../../../utils';
 import { TensorData } from '@ccp-nc/crystvis-js/lib/tensor';
 
 
@@ -12,7 +12,7 @@ const ctable = {
     'ms': msColor,
     'efg': efgColor,
     'dipolarAB': dipColor,
-    'jcoupling': jcColor,
+    'jcouplingAB': jcColor,
     // grey for crystal
     'crystal': 0x808080
 };
@@ -43,12 +43,11 @@ function getTensorValues(atom1, tensor, atom2 = null) {
     }
     // J coupling
     else if (tensor === 'jcouplingAB') {
-        //todo
         if (atom1.model.hasArray('isc')) {
             if (atom1 === atom2) {
                 return null;
             }
-            const J = jCoupling(atom1, atom2);
+            const J = jCouplingTensor(atom1, atom2);
             return new TensorData(J);
         }
     }
