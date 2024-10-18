@@ -112,7 +112,7 @@ function MVSidebarLoad(props) {
             <span className='sep-1' />
             <div>Or choose from an example file</div>
             <div className='mv-sidebar-row'>
-                <MVCustomSelect onSelect={(v) => { appint.exampleSelected = v; }} selected={appint.exampleSelected} name='example_dropdown' zorder="2">
+                <MVCustomSelect onSelect={(v) => { appint.exampleSelected = v; }} selected={appint.exampleSelected} name='example_dropdown'>
                     {exampleFileNames.map((n) => {
                         return <MVCustomSelectOption key={n} value={n}>{n}</MVCustomSelectOption>
                     })}
@@ -126,7 +126,7 @@ function MVSidebarLoad(props) {
                 <div className='mv-sidebar-tooltip-grid'>
                     <div>Display unwrapped molecular units?&nbsp;</div>
                     <MVTooltip tooltipText={tooltip_molecular_crystal} />
-                    <MVCustomSelect onSelect={(v) => { appint.loadAsMol = v; }} selected={appint.loadAsMol} name='loadasmol_dropdown' zorder="2">
+                    <MVCustomSelect onSelect={(v) => { appint.loadAsMol = v; }} selected={appint.loadAsMol} name='loadasmol_dropdown'>
                         <MVCustomSelectOption value={null}>Auto</MVCustomSelectOption>
                         <MVCustomSelectOption value={true}>Yes</MVCustomSelectOption>
                         <MVCustomSelectOption value={false}>No</MVCustomSelectOption>

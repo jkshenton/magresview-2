@@ -22,6 +22,8 @@ import { saveContents, copyContents } from '../../utils';
 
 import MVSwitch from '../../controls/MVSwitch';
 import MVButton from '../../controls/MVButton';
+import MVIcon from '../../icons/MVIcon';
+
 import MVRadioButton, { MVRadioGroup } from '../../controls/MVRadioButton';
 import MVCustomSelect, { MVCustomSelectOption } from '../../controls/MVCustomSelect';
 import MVModal from '../../controls/MVModal';
@@ -35,6 +37,23 @@ import * as mjs from 'mathjs';
 // * Function to get the list of possible tensors for a given atom selection
 **/
 
+// Dictionary to convert tensor names to their icon components
+const tensorIcons = {
+    'ms': <MVIcon icon="ms" color='var(--ms-color-3)' />,
+    'efg': <MVIcon icon="efg" color='var(--efg-color-3)' />,
+    'dipolarAB': <MVIcon icon="dip" color='var(--dip-color-3)' />,
+    'jcoupling': <MVIcon icon="jcoup" color='var(--jcoup-color-3)' />,
+    'crystal': <MVIcon icon="crystal" color='var(--crystal-color-3)' />
+}
+
+const tensor_labels = {
+    'ms': 'MS',
+    'efg': 'EFG',
+    'dipolarAB': 'Dipolar A→B',
+    'jcoupling': 'J-coupling',
+    'crystal': 'Crystal axes'
+}
+
 function MVTensorOptions(props) {
     // Actually unnecessary; we only use it to trigger a re-render
     const [ state, setState ] = useState(1);
@@ -44,32 +63,36 @@ function MVTensorOptions(props) {
     const tensors = eulint.allowedTensorTypes;
 
     const options = tensors.map((t, i) => {
-        return (<MVRadioButton key={i} value={t}> {t.toUpperCase()} </MVRadioButton>);
+        const icon = tensorIcons[t];
+        const label = tensor_labels[t];
+        return (<MVCustomSelectOption key={i} icon={icon} value={t}> {label} </MVCustomSelectOption>);
     });
 
     
-    return (<div>
-        <MVRadioGroup label='Atom A tensor' onSelect={(v) => { eulint.tensorA = v; setState(-state); }} selected={eulint.tensorA} name='tensorA_radio'>
-            {options}
-        </MVRadioGroup>
-        <span className='header'>Tensor A ordering:</span>
-        <MVCustomSelect zorder={3} selected={eulint.orderA} onSelect={(v) => { eulint.orderA = v; }}>
-            <MVCustomSelectOption value='haeberlen'>Haeberlen</MVCustomSelectOption>
-            <MVCustomSelectOption value='nqr'>NQR</MVCustomSelectOption>
-            <MVCustomSelectOption value='increasing'>Ascending</MVCustomSelectOption>
-            <MVCustomSelectOption value='decreasing'>Descending</MVCustomSelectOption>
-        </MVCustomSelect>
-        <MVRadioGroup label='Atom B tensor' onSelect={(v) => { eulint.tensorB = v; setState(-state); }} selected={eulint.tensorB} name='tensorB_radio'>
-            {options}
-        </MVRadioGroup>
-        <span className='header'>Tensor B ordering:</span>
-        <MVCustomSelect zorder={3} selected={eulint.orderB} onSelect={(v) => { eulint.orderB = v; }}>
-            <MVCustomSelectOption value='haeberlen'>Haeberlen</MVCustomSelectOption>
-            <MVCustomSelectOption value='nqr'>NQR</MVCustomSelectOption>
-            <MVCustomSelectOption value='increasing'>Ascending</MVCustomSelectOption>
-            <MVCustomSelectOption value='decreasing'>Descending</MVCustomSelectOption>
-        </MVCustomSelect>
-
+    return (
+    <div className='mv-sidebar-grid'>
+            <span className='header'>Atom A tensor:</span>
+            <span className='header'>Ordering:</span>
+            <MVCustomSelect onSelect={(v) => { eulint.tensorA = v; }} selected={eulint.tensorA} name='tensorA_select'>
+                {options}
+            </MVCustomSelect>
+            <MVCustomSelect selected={eulint.orderA} onSelect={(v) => { eulint.orderA = v; }}>
+                <MVCustomSelectOption value='haeberlen'>Haeberlen</MVCustomSelectOption>
+                <MVCustomSelectOption value='nqr'>NQR</MVCustomSelectOption>
+                <MVCustomSelectOption value='increasing'>Ascending</MVCustomSelectOption>
+                <MVCustomSelectOption value='decreasing'>Descending</MVCustomSelectOption>
+            </MVCustomSelect>
+            <span className='header'>Atom B tensor:</span>
+            <span className='header'>Ordering:</span>
+            <MVCustomSelect onSelect={(v) => { eulint.tensorB = v; }} selected={eulint.tensorB} name='tensorB_select'>
+                {options}
+            </MVCustomSelect>
+            <MVCustomSelect selected={eulint.orderB} onSelect={(v) => { eulint.orderB = v; }}>
+                <MVCustomSelectOption value='haeberlen'>Haeberlen</MVCustomSelectOption>
+                <MVCustomSelectOption value='nqr'>NQR</MVCustomSelectOption>
+                <MVCustomSelectOption value='increasing'>Ascending</MVCustomSelectOption>
+                <MVCustomSelectOption value='decreasing'>Descending</MVCustomSelectOption>
+            </MVCustomSelect>
     </div>);
 }
 
@@ -192,9 +215,9 @@ function MVSidebarEuler(props) {
 
 
         
-        <div className='mv-sidebar-block'>
+        <div className='mv-sidebar-block' style={{ position: 'relative'}}>
             <h3>Convention</h3>
-            <MVCustomSelect zorder={3} selected={eulint.convention} onSelect={(v) => { eulint.convention = v; }}>
+            <MVCustomSelect selected={eulint.convention} onSelect={(v) => { eulint.convention = v; }}>
                 <MVCustomSelectOption value='zyz'>ZYZ</MVCustomSelectOption>
                 <MVCustomSelectOption value='zxz'>ZXZ</MVCustomSelectOption>
             </MVCustomSelect>
