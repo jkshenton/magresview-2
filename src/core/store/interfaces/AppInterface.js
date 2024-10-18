@@ -43,6 +43,7 @@ const initialAppState = {
     app_load_as_mol: null, // crystvis-js will try to figure out what's appropriate...
     app_use_nmr_isos: true,
     app_vdw_scaling: 1.0,
+    app_example_selected: null, // For the example file loader
 };
 
 // Functions meant to operate on the app alone.
@@ -238,6 +239,18 @@ class AppInterface extends BaseInterface {
         this.dispatch({
             type: 'set',
             key: 'app_vdw_scaling',
+            value: v
+        });
+    }
+
+    get exampleSelected() {
+        return this.state.app_example_selected;
+    }
+
+    set exampleSelected(v) {
+        this.dispatch({
+            type: 'set',
+            key: 'app_example_selected',
             value: v
         });
     }
