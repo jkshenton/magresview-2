@@ -156,10 +156,19 @@ function tableRow(values, width=20, precision=5) {
  * @param  {[type]} filename The name of the file to download
  */
 function saveContents(data, filename) {
-    const encodedData = encodeURIComponent(data);
+    let mimeType = 'text/plain';
+    let encodedData;
+
+    if (data.startsWith('data:image/png;base64,')) {
+        mimeType = 'image/png';
+        encodedData = data;
+    } else {
+        encodedData = `data:${mimeType},${encodeURIComponent(data)}`;
+    }
+
     const download = document.createElement('a');
     download.setAttribute('download', filename);
-    download.setAttribute('href', `data:text/plain,${encodedData}`);
+    download.setAttribute('href', encodedData);
     download.click();
 }
 
@@ -170,7 +179,6 @@ function saveContents(data, filename) {
  * @param  {[type]} filename Filename to save
  */
 function saveImage(data, filename='image.png') {
-    data = data.replace('image/png', 'image/octet-stream');
     saveContents(data, filename);
 }
 
