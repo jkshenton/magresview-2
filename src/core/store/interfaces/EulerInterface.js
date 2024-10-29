@@ -32,6 +32,7 @@ const initialEulerState = {
     eul_tensor_B: 'efg',
     eul_tensor_order_B: 'increasing',
     eul_convention: 'zyz',
+    eul_active: true, // active vs passive rotations
     eul_results: null,
     eul_equivalent_angles: null,
     eul_tensor_A_values: null,
@@ -139,6 +140,15 @@ class EulerInterface extends DataCheckInterface {
             throw Error('Invalid Euler angles convention');
         this.dispatch(makeEulerAction({eul_convention: v}));
     }
+
+    get active() {
+        return this.state.eul_active;
+    }
+
+    set active(v) {
+        this.dispatch(makeEulerAction({eul_active: v}));
+    }
+
 
     get equivalentAngleConfig() {
         return this.state.eul_equivalent_angle_config;
@@ -324,12 +334,14 @@ class EulerInterface extends DataCheckInterface {
     }
 
     txtReport() {
+        const isActive = this.active;
+        const activeText = isActive? 'active' : 'passive';
         let report = 'Euler angles between tensors:\n';
 
         report += `${this.tensorA} on ${this.atomLabelA}\nand\n`;
         report += `${this.tensorB} on ${this.atomLabelB}\n\n`;
 
-        report += `Convention: ${this.convention.toUpperCase()}\n\n`;
+        report += `Convention: ${this.convention.toUpperCase()} (${activeText})\n\n`;
 
         report += `Degrees:\n${this.alpha}    ${this.beta}    ${this.gamma}\n\n`;
         report += `Radians:\n${this.alphaRad}     ${this.betaRad}     ${this.gammaRad}`;
@@ -351,9 +363,10 @@ class EulerInterface extends DataCheckInterface {
         const data = targ.map((a, i) => {
             return [a.crystLabel, a.getArrayValue('ms'), a.getArrayValue('efg')];
         });
-
-        let table = `# Euler angles between MS and EFG tensors in radians, convention: ${this.convention.toUpperCase()}\n`;
-        table += 
+        
+        const isActive = this.active;
+        const activeText = isActive? 'active' : 'passive';
+        let table = `# Euler angles between MS and EFG tensors in radians, convention: ${this.convention.toUpperCase()} (${activeText})\n`;
         table += `# Atom    alpha    beta    gamma\n`;
         let conv = this.convention;
 
@@ -363,7 +376,7 @@ class EulerInterface extends DataCheckInterface {
 
 
             // let [alpha, beta, gamma] = eulerBetweenTensors(ms, efg, conv);
-            let [alpha, beta, gamma] = ms.eulerTo(efg, conv);
+            let [alpha, beta, gamma] = ms.eulerTo(efg, conv, isActive);
 
             table += `${label}    ${alpha}    ${beta}    ${gamma}\n`;
         });

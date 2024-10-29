@@ -3,7 +3,6 @@
  */
 
 import { msColor, efgColor, dipColor, jcColor } from './colors';
-import { eulerBetweenTensors } from '../../../utils';
 import { dipolarTensor, jCouplingTensor } from '../../../utils';
 import { TensorData } from '@ccp-nc/crystvis-js/lib/tensor';
 
@@ -73,6 +72,8 @@ function eulerAngleListener(state) {
 
     const conv = state.eul_convention;
 
+    const eulerActive = state.eul_active;
+
     const orderA = state.eul_tensor_order_A;
     const orderB = state.eul_tensor_order_B;
 
@@ -117,11 +118,8 @@ function eulerAngleListener(state) {
         nmrB = getTensorValues(a2B, tB, a2A);
     }
 
-    console.log('nmrA', nmrA)
-    console.log('nmrB', nmrB)
 
     let results = null;
-    let results1 = null;
     let all_equivalent_eulers = null;
 
     let pair_tensors = ['dipolarAB', 'jcouplingAB']
@@ -133,13 +131,8 @@ function eulerAngleListener(state) {
         // ensure the order is set correctly
         nmrA.convention = orderA;
         nmrB.convention = orderB;
-        // Get the eigenvectors
-        results1 = eulerBetweenTensors(nmrA, nmrB, conv, orderA, orderB);
-        results = nmrA.eulerTo(nmrB, conv) //this one is in crystalvis-js and should be more robust to edge cases
-        console.log('results', results.map(x => x * 180 / Math.PI))
-        console.log('results1', results1.map(x => x * 180 / Math.PI))
         // get equivalent euler angle set:
-        all_equivalent_eulers = nmrA.equivalentEulerTo(nmrB, conv, true, 1e-6, false)
+        all_equivalent_eulers = nmrA.equivalentEulerTo(nmrB, conv, eulerActive, 1e-6, false)
         results = all_equivalent_eulers[equiv_angle_index];
         console.log('equivalent eulers', all_equivalent_eulers.map(x => x.map(y => y * 180 / Math.PI)))
         // TODO these now agree(though not with euler disk approach!)

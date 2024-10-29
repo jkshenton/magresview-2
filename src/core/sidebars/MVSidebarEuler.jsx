@@ -103,8 +103,9 @@ function MVEulerEquivalentAngleTableModal(props) {
     const eulint = useEulerInterface();
     // get angle values
     const all_angles = eulint.equivalentAngles;
+    const activeText = eulint.active? 'Active' : 'Passive';
 
-    const title = `Equivalent ${eulint.convention.toUpperCase()} Euler Angles`;
+    const title = `Equivalent ${activeText} ${eulint.convention.toUpperCase()} Euler Angles`;
 
     // String to display above the table:
     let descriptionA = '';
@@ -260,23 +261,28 @@ function MVSidebarEuler(props) {
             </MVButton>            
         </div>
 
-
-        
-        <div className='mv-sidebar-block' style={{ position: 'relative'}}>
+        <div className='mv-sidebar-block'>
             <h3>Convention</h3>
             <MVCustomSelect selected={eulint.convention} onSelect={(v) => { eulint.convention = v; }}>
                 <MVCustomSelectOption value='zyz'>ZYZ</MVCustomSelectOption>
                 <MVCustomSelectOption value='zxz'>ZXZ</MVCustomSelectOption>
             </MVCustomSelect>
+            <div className='mv-euler-agrid-switch'>
+                <span>Passive</span>
+                <MVSwitch on={ eulint.active } onClick={() => { eulint.active = !eulint.active; }}
+                            colorFalse='var(--bkg-color-1)' colorTrue='var(--bkg-color-1)'/>
+                <span>Active</span>
+            </div>
         </div>
+        <span className='sep-1' />
         <div className='mv-sidebar-block'>
             <MVButton onClick={() => { eulint.cycleEquivalentAngleConfig(); }}>
                 Next equivalent angle set
             </MVButton>
-            Current set: [{eulint.equivalentAngleConfig[0]}, {eulint.equivalentAngleConfig[1]}]
+
         </div>
         <div className='mv-sidebar-block'>
-            <h3>Relative Euler Angles</h3>
+            <h3>Relative Euler Angles ({eulint.equivalentAngleConfig[0] * 4 + eulint.equivalentAngleConfig[1] + 1} / 16)</h3>
             <table className='mv-eul-results'>
                 <thead>
                     <tr>
@@ -295,22 +301,17 @@ function MVSidebarEuler(props) {
             </table>
         </div>
         <span className='sep-1' />
-        <div className='mv-sidebar-block'>
+        <div className='mv-sidebar-grid'>
             <MVButton onClick={() => { copyContents(eulint.txtReport()); }} disabled={!hasSel}><FaCopy />&nbsp;Copy to clipboard</MVButton>            
-        </div>
-        {/* show modal? */}
-        <div className='mv-sidebar-block'>
+            <MVButton onClick={() => { saveContents(eulint.txtSelfAngleTable(), 'eulerTable.txt'); }}  disabled={!(eulint.hasMSData && eulint.hasEFGData)}>
+                Download table of MS-to-EFG angles
+            </MVButton>            
+            <MVButton onClick={() => { eulint.showAllAngles = true; }} disabled={!hasSel}>Show all equivalent Euler angles</MVButton>
+            <MVEulerEquivalentAngleTableModal display={eulint.showAllAngles} close={() => { eulint.showAllAngles = false; }} />
             <MVButton onClick={() => { eulint.showTable = true; }} disabled={!hasEither}>Show principal axis systems</MVButton>
             <MVEulerTensorTableModal display={eulint.showTable} close={() => { eulint.showTable = false; }} />
         </div>
         <div className='mv-sidebar-block'>
-            <MVButton onClick={() => { eulint.showAllAngles = true; }} disabled={!hasSel}>Show equivalent Euler angles</MVButton>
-            <MVEulerEquivalentAngleTableModal display={eulint.showAllAngles} close={() => { eulint.showAllAngles = false; }} />
-        </div>
-        <div className='mv-sidebar-block'>
-            <MVButton onClick={() => { saveContents('data:,' + eulint.txtSelfAngleTable(), 'eulerTable.txt'); }}  disabled={!(eulint.hasMSData && eulint.hasEFGData)}>
-                Download table of MS-to-EFG angles
-            </MVButton>            
         </div>
 
     </MagresViewSidebar>);
