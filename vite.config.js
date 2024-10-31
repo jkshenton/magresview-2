@@ -1,21 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
-import legacy from '@vitejs/plugin-legacy'
 import commonjs from 'vite-plugin-commonjs';
-// import commonjs from '@rollup/plugin-commonjs';
-// rollup resolve plugin
-import resolve from '@rollup/plugin-node-resolve';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-
-
+import resolve from '@rollup/plugin-node-resolve';
 
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './', // Relative paths for GitHub Pages
   build: {
-    outDir: './dist/magresview-2',
+    outDir: './dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      external: ['./node_modules/vite-plugin-node-polyfills/shims/buffer'],
+    },
     // commonjs
     commonjsOptions: {
       include: [
@@ -25,6 +25,7 @@ export default defineConfig({
       ],
     },
   },
+  publicDir: 'public',
   server: {
     port: 4200,
     open: true,
@@ -35,7 +36,9 @@ export default defineConfig({
     setupFiles: 'src/setupTests.js',
     css: true,
   },
-  plugins: [react(), svgr(), legacy(),
+  plugins: [
+    react(),
+    svgr(),
     nodePolyfills({
       include: ['path', 'stream', 'util'],
       exclude: ['http'],
@@ -49,15 +52,10 @@ export default defineConfig({
       },
       protocolImports: true,
     }),
-    commonjs({
-      filter(id) {
-      if (id.includes('node_modules/@jkshenton')) {
-        return true
-      }
-      if (id.includes('node_modules/@ccp-nc/crystvis-js')) {
-        return true
-      }
-    },}),
-    resolve(),
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2021',
+    }
+  },
 });

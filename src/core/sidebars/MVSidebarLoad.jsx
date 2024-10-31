@@ -94,7 +94,7 @@ function MVSidebarLoad(props) {
 
     const loadExampleFile = (selectedExample) => {
         if (selectedExample) {
-            const filePath = `/example_magres/${exampleFiles[selectedExample]}`;
+            const filePath = `./example_magres/${exampleFiles[selectedExample]}`;
             fetch(filePath)
                 .then(response => response.text())
                 .then(data => {
