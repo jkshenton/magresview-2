@@ -9,6 +9,8 @@ import { Provider } from 'react-redux';
 import magresStore from './core/store';
 
 // TODO: migrate to the new createRoot API
+// Note that I tried, but when left in strict mode, the re-rendering caused issues
+// with loading the three.js canvas. 
 
 ReactDOM.render(
   <React.StrictMode>

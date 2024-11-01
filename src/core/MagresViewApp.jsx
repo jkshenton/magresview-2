@@ -42,9 +42,15 @@ function MagresViewPage() {
     let appint = useAppInterface();
 
     const appRef = useRef(appint);
+    const appWindowRef = useRef(null); // reference to the DOM element
 
     useEffect(() => {
-        appRef.current.initialise('#mv-appwindow');
+        appRef.current.initialise(appWindowRef.current);
+
+        return () => {
+            console.log('Destroying app');
+            appRef.current.destroy();
+        }
     }, []);
 
 

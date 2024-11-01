@@ -257,9 +257,13 @@ class AppInterface extends BaseInterface {
 
 
     initialise(elem) {
+        if (this.initialised) {
+            console.log('CrystVis app already initialised');
+            return;
+        }
         console.log('Initialising CrystVis app on element ' + elem);
         // Initialise app but only if it's not already there
-        const vis = new CrystVis(elem);
+        const vis = new CrystVis(elem, 0, 0, {preserveDrawingBuffer: true});
         vis.highlightSelected = true; // Our default
         
         const handler = new ClickHandler(vis, [
@@ -359,6 +363,21 @@ class AppInterface extends BaseInterface {
         });
     }
 
+    destroy() {
+        if (!this.initialised) {
+            console.log('CrystVis app not initialized');
+            return;
+          }
+          console.log('Destroying CrystVis app');
+          this.state.app_viewer.destroy();
+          this.dispatch({
+            type: 'update',
+            data: {
+              app_viewer: null,
+              app_click_handler: null
+            }
+          });
+        }
 }
 
 // Hook for interface

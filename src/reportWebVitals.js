@@ -1,12 +1,20 @@
-const reportWebVitals = onPerfEntry => {
+const reportWebVitals = (onPerfEntry) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
-    });
+    import('web-vitals')
+      .then((webVitals) => {
+        // Note onFID is deprecated and will be removed in the next major version of web-vitals
+        const { onCLS, onFID, onFCP, onLCP, onTTFB } = webVitals;
+        
+        // Call the functions with the callback
+        onCLS(onPerfEntry);
+        onFID(onPerfEntry);
+        onFCP(onPerfEntry);
+        onLCP(onPerfEntry);
+        onTTFB(onPerfEntry);
+      })
+      .catch((error) => {
+        console.error('Error loading web-vitals:', error);
+      });
   }
 };
 
